@@ -41,6 +41,9 @@
         </button>
         <div class="container">
             <a class="navbar-brand" href="#">Harrison Schultz</a>
+            <a class="navbar-brand" href="https://github.com/harrisonschultz?tab=repositories"><img src="public/img/github.png" title="github"></a>
+            <a class="navbar-brand" href="https://www.linkedin.com/in/harrison-schultz-297870112/"><img src="public/img/linkedin.png" title="linkedin"></a>
+            <a class="navbar-brand" href="https://drive.google.com/file/d/0B5nJ-o7uJq47LWsxS1lQMEVDa3c/view?usp=sharing"><img src="public/img/resume.png" title="Resume" target="_blank"></a>
             <div class="collapse navbar-collapse" id="navbarExample">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
@@ -58,18 +61,18 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="height:100%">
 
         <!-- Jumbotron Header -->
         <header class="jumbotron my-4">
             <h1 class="display-3">Web Developer</h1>
-            <p class="lead">-JavaScript/HTML/CSS <br> -Experience: Node.js, git, Express, jQuery</p>
+            <p class="lead">-JavaScript/HTML/CSS <br> -Experience: Node.js, git, Express, jQuery, AJAX, Angular.js</p>
         </header>
 
         <!-- Page Features -->
          <section id="portfolio">
         <div class="container">
-            <h2 class="text-center" style="padding: 8px; border-bottom: 1px solid gray">Portfolio</h2>
+            <h2 class="text-center jumboHeader" style="padding: 8px;">Portfolio</h2>
             <hr class="star-primary">
             <div class="row">
                 <div class="col-sm-4 portfolio-item">
@@ -78,7 +81,7 @@
                         <div class="caption">
                             <div class="caption-content">
                                 <h4><strong>News API App</strong></h4>
-                                <p style='text-align:center;'>Web app that displays latest headlines from Hacker News.</p> <p class='uses'><i>Node.js, jQuery, Express</i></p>
+                                <p style='text-align:center;'>Web app that displays latest headlines from Hacker News.</p> <p class='uses'><i>Node.js, jQuery, Express, AJAX</i></p>
                             </div>
                         </div>
                         <img class="img-fluid" src="public/img/hackerNewsIcon.jpg" alt="">
@@ -100,13 +103,56 @@
                 </div>
                 <div class="col-sm-4 portfolio-item">
                     <div class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
+                        <a href="http://www.harrisonschultz.us/idle.html">
                         <div class="caption">
                             <div class="caption-content">
-                               <h4><strong>For Expansion</strong></h4>
-                                <p style='text-align:center;'>Waiting on the next one</p> <p class='uses'><i>???</i></p>
+                               <h4><strong>Incremental Game</strong></h4>
+                                <p style='text-align:center;'>Game used to learn css/javascript/html5</p> <p class='uses'><i>HTML5 Local Storage</i></p>
                             </div>
                         </div>
+                        <img class="img-fluid" src="public/img/incremental.png" alt="">
+                        </a>
                     </div>
+                </div>
+            </div>
+            <!--Second Row-->
+             <div class="row">
+                <div class="col-sm-4 portfolio-item">
+                    <div class="portfolio-link" data-toggle="modal">
+                        <a href="https://friendslist-hs.herokuapp.com/">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4><strong>Friends List</strong></h4>
+                                <p style='text-align:center;'>List app where a user can add and delete 'friends'</p> <p class='uses'><i>Node.js, jQuery, Express, AJAX</i></p>
+                            </div>
+                        </div>
+                        <img class="img-fluid" src="public/img/FriendsList.png" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <div class="portfolio-link" id="store" href="#portfolioModal2" data-toggle="modal">
+                        <a href="https://github.com/harrisonschultz/javascriptLibrary">
+                        <div class="caption" >
+                            <div class="caption-content" >
+                                <h4><strong>JavaScript Library</strong></h4>
+                                <p style='text-align:center;'>Library I created while learning JavaScript</p> <p class='uses'><i>Vanilla JS</i></p>
+                            </div>
+                        </div>
+                        <img class="img-fluid" src="public/img/books.png" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!--<div class="col-sm-4 portfolio-item">
+                    <div class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                               <h4><strong>Incremental Game</strong></h4>
+                                <p style='text-align:center;'>Game used to learn css/javascript/html5</p> <p class='uses'><i>HTML5 Local Storage</i></p>
+                            </div>
+                        </div>
+                        <img class="img-fluid" src="public/img/incremental.png" alt="">
+                    </div>-->
                 </div>
             </div>
         </div>
