@@ -172,3 +172,6 @@ form {
   border-top: 1px solid #292b2c;
   padding-top: 15px;
 }
+.jumbotron{
+  background-color: white;
+}
