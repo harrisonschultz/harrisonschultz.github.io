@@ -13,7 +13,7 @@ export class ProgressBar extends HTMLElement {
   }
 
   async connectedCallback() {
-    const res = await fetch("/components/ProgressBar/ProgressBar.html");
+    const res = await fetch("./components/ProgressBar/ProgressBar.html");
     const textTemplate = await res.text();
     const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
     const shadowRoot = this.attachShadow({ mode: "open" });
