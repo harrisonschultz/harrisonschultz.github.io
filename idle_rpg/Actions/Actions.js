@@ -1,7 +1,7 @@
-import { setAction, getAttr, setAvailableActions } from "/Character/Character.js";
+import { setAction, getAttr, setAvailableActions } from "../Character/Character.js";
 
 (async () => {
-  const res = await fetch("/Actions/Actions.html");
+  const res = await fetch("./Actions/Actions.html");
   const textTemplate = await res.text();
   const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
 

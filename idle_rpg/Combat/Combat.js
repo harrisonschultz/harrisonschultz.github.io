@@ -1,7 +1,7 @@
 import { addAttrExp } from "../Character/Character.js";
 
 (async () => {
-  const res = await fetch("/Combat/Combat.html");
+  const res = await fetch("./Combat/Combat.html");
   const textTemplate = await res.text();
   const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
 

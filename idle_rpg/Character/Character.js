@@ -2,7 +2,7 @@ import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 
 (async () => {
-  const res = await fetch("/Character/Character.html");
+  const res = await fetch("./Character/Character.html");
   const textTemplate = await res.text();
   const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
 
