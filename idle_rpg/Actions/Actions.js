@@ -1,4 +1,4 @@
-import { setAction, getAttr, setAvailableActions } from "../Character/Character.js";
+import { setAction, getAttr, setAvailableActions } from '../Character/Character.js'
 
 (async () => {
   const res = await fetch("./Actions/Actions.html");
