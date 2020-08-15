@@ -47,9 +47,3 @@ function performAction() {
 }
 
 main();
-// 'str-train-1': {
-//   type: 'train',
-//   value: 0.01,
-//   fatigue: 0.5,
-//   attr: 'str'
-// },
