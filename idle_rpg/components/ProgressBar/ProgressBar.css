@@ -1,0 +1,42 @@
+.meter {
+  position: relative;
+  border-radius: 2px;
+  width: 100%;
+  overflow: hidden;
+}
+
+#label {
+  position: absolute;
+  top: 3px;
+  left: 8px;
+  font-weight: 550;
+  color: white;
+  z-index: 1;
+}
+
+#progress-value {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  font-weight: 550;
+  color: white;
+  z-index: 1;
+}
+
+#progress-template {
+  display: flex;
+  flex: 1;
+}
+
+#progress {
+  height: 20px;
+  border-radius: 2px;
+  transition: transform 0.09s linear;
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}

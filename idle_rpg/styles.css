@@ -1,0 +1,27 @@
+body {
+  display: flex;
+  font-family: sans-serif;
+  color: white;
+  background-color: #454551;
+  font-size: 14px;
+}
+
+
+.column {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 8px;
+}
+#character-container {
+  display: flex;
+  flex-direction: column;
+  padding: 8;
+}
+#action-list {
+  display: flex;
+  flex-direction: column;
+  padding: 8;
+}
+#log {
+  border: 1px solid #aaa;
+}

@@ -1,0 +1,54 @@
+#character-sheet {
+  display: flex;
+  flex-direction: column;
+}
+
+.attributes {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.attribute-details {
+  display: flex;
+}
+
+#face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.bar {
+  flex: 1;
+  display: flex;
+  padding: 2px 0px;
+}
+
+.max-value {
+  width: 80px;
+  text-align: end;
+}
+
+.attribute-label {
+  font-weight: 550;
+  width: 140px;
+}
+
+.attribute-value {
+  width: 80px;
+  text-align: end;
+}

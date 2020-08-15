@@ -1,0 +1,8 @@
+#log {
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 400px;
+
+  background-color: rgba(180, 180, 180, 0.5);
+}

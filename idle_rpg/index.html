@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Idle</title>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script type="module" src="theme.js"></script>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="init.js"></script>
+    <script type="module" src="/Character/Character.js"></script>
+    <script type="module" src="/Combat/Combat.js"></script>
+    <script type="module" src="/Actions/Actions.js"></script>
+    <script type="module" src="/components/ProgressBar/ProgressBar.js"></script>
+
+    <div class="column">
+      <div id="character-sheet"><character-sheet></character-sheet></div>
+    </div>
+
+    <div class="column">
+      <div id="log-container"><combat-sheet></combat-sheet></div>
+      <div id="action-list"><actions-list></actions-list></div>
+    </div>
+  </body>
+</html>
