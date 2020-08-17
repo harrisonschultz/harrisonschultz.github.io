@@ -8,7 +8,11 @@
 }
 
 .action-button {
+  min-width: 120px;
+  max-width: 120px;
   width: 120px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   padding-top: 4px;
   padding-bottom: 4px;
   border-radius: 4px;
@@ -20,7 +24,6 @@
 
 #current-action-container {
   display: flex;
-  margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 550;
 }
@@ -32,16 +35,21 @@
 
 .button-seperator {
   flex: 1 0 10px;
+  max-width: 10px;
 }
 
 .action-button:hover {
   box-shadow: 0px 0px 3px 2px rgba(150, 150, 150, 0.4);
 }
 
-#actions-container {
-  padding: 8px 0px;
+.actions-row {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+#actions-container {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Reset */

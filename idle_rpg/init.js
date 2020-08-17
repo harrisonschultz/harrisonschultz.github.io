@@ -3,6 +3,8 @@ export function initialize() {
     prevAction: 'rest',
     action: 'rest',
 
+    tab: 'Train',
+
     attrs: {
       agi: { level: 1, exp: 0, expNeeded: 0 },
       int: { level: 1, exp: 0, expNeeded: 0 },
@@ -11,9 +13,9 @@ export function initialize() {
       str: { level: 1, exp: 0, expNeeded: 0 },
     },
 
-    level: {
-      level: 1,
-      experience: 0,
+    job: {
+      job: 'child',
+      level: { level: 1, exp: 0, expNeeded: 0 },
     },
 
     stats: {

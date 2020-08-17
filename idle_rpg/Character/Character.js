@@ -1,35 +1,17 @@
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 
+const STR_HEALTH_MODIFIER = 1;
+const INT_MANA_MODIFIER = 1;
+const AGI_STAMINA_MODIFIER = 1;
+
 (async () => {
   const res = await fetch("./Character/Character.html");
   const textTemplate = await res.text();
   const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
 
   class Character extends HTMLElement {
-    prevAction = "rest";
-    action = "rest";
-
-    attrs = {
-      agi: { level: 1, exp: 0 },
-      int: { level: 1, exp: 0 },
-      lck: { level: 1, exp: 0 },
-      per: { level: 1, exp: 0 },
-      str: { level: 1, exp: 0 },
-    };
-
-    level = {
-      level: 1,
-      experience: 0,
-    };
-
-    stats = {
-      health: { current: 1, max: 1 },
-      stamina: { current: 10, max: 10 },
-      mana: { current: 1, max: 1 },
-      fatigue: { current: 10, max: 10 },
-    };
-
+   
     constructor() {
       super();
 
@@ -39,6 +21,9 @@ import { theme } from "../theme.js";
         this.stats = window.player.stats;
       }
 
+      document.addEventListener('attr-level', () =>  this.setMaxStat('health', 'str', STR_HEALTH_MODIFIER))
+      document.addEventListener('attr-level', () =>  this.setMaxStat('mana', 'int', INT_MANA_MODIFIER))
+      document.addEventListener('attr-level', () =>  this.setMaxStat('stamina', 'agi', AGI_STAMINA_MODIFIER))
       document.addEventListener("character-changed", this.render);
     }
 
@@ -57,7 +42,7 @@ import { theme } from "../theme.js";
       const statsColors = {
         health: theme.colors.pastelRed,
         mana: theme.colors.pastelBlue,
-        stamina: theme.colors.pastelGreen,
+        stamina: theme.colors.pastelPaleGreen,
         fatigue: theme.colors.pastelPurple
       }
 
@@ -76,7 +61,7 @@ import { theme } from "../theme.js";
         const attrBar = new ProgressBar(
           "character-changed",
           () => getAttrProgress(s),
-          theme.colors.pastelBlue,
+          theme.colors.pastelGreen,
           { value: false },
           { height: "4px" }
         );
@@ -87,18 +72,50 @@ import { theme } from "../theme.js";
       this.render();
     };
 
+    /*
+      @param - Heal sets whether or not increase max hp also raises current by the same amount.
+    */
+
+    setMaxStat(stat, attr, mod,  heal = true) {
+      // Strength increases max hp.
+      // Maybe also job modifier?
+      const health = getStat(stat)
+      const str = getAttr(attr)
+      const strHealthModifier = mod; 
+      const baseHp = 1;
+      let newHealthMax;
+      let healthIncrease = 0;
+      
+      newHealthMax = str.level * strHealthModifier
+      if (health.max !== newHealthMax) {
+        const healthDifference = newHealthMax - health.max; 
+        const newHealth = {...health}
+        newHealth.max = newHealthMax
+        
+        if (heal) {
+          newHealth.current += healthDifference
+        }
+
+        setStat(stat, newHealth)
+        this.render()
+      }
+    }
+
     render = () => {
       if (this.shadowRoot) {
         for (var key in player.attrs) {
           this.shadowRoot.getElementById(key).innerHTML = player.attrs[key].level;
         }
-        this.shadowRoot.getElementById("level").innerHTML = player.level.level;
       }
     };
   }
 
   customElements.define("character-sheet", Character);
 })();
+
+export function getMaxHealth(actions) {
+  window.player.availableActions = actions
+}
 
 export function setAvailableActions(actions) {
   window.player.availableActions = actions
@@ -108,8 +125,20 @@ export function getStat(stat) {
   return window.player.stats[stat];
 }
 
+export function setStat(stat, statData) {
+  window.player.stats[stat] = statData;
+}
+
 export function getAttr(attr) {
   return window.player.attrs[attr]
+}
+
+export function getJobProgress() {
+  return { current: window.player.job.level.exp, max: window.player.job.level.expNeeded };
+}
+
+export function getJob() {
+  return window.player.job
 }
 
 export function getAttrProgress(attr) {

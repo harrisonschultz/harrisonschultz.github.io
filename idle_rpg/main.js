@@ -1,6 +1,8 @@
 import { initialize } from "./init.js";
-import { actions } from "./Actions/Actions.js";
+import { actions, Actions } from "./Actions/Actions.js";
+import { Combat } from "./Combat/Combat.js"
 import { addAttrExp, modifyStat } from "./Character/Character.js";
+import { TabMenu } from "./components/TabMenu/TabMenu.js";
 
 // Main loop
 async function main() {
@@ -8,6 +10,7 @@ async function main() {
   let tickRate = 100; // game ticks at 1/10 a second (in milliseconds).
 
   initialize();
+  initialRender();
 
   while (true) {
     tick++;
@@ -17,6 +20,20 @@ async function main() {
     
     await regulateTickRate(tickRate);
   }
+}
+
+function initialRender() {
+  // Render main view
+  const tabContainer = document.getElementById('main-view')
+  const tabMenu = new TabMenu([{
+    label: 'Train',
+    view: new Actions()
+  },{
+    label: 'Adventure',
+    view: new Combat()
+  }]) 
+  
+  tabContainer.appendChild(tabMenu)
 }
 
 function regulateTickRate(ms) {

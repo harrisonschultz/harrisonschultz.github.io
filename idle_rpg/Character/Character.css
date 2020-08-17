@@ -5,7 +5,7 @@
 
 .attributes {
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   display: flex;
   flex-direction: column;
 }
@@ -14,6 +14,22 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 4px;
+}
+
+.container {
+  padding: 6px;
+  border-radius: 4px;
+  background-color: rgba(240,240,240, 0.2);
+}
+
+.title {
+  color: #78DCE8;
+  font-size: 13px;
+  padding-bottom: 6px;
+}
+
+.secondary-attributes {
+  margin-top: 4px;
 }
 
 .attribute-details {
@@ -44,7 +60,6 @@
 }
 
 .attribute-label {
-  font-weight: 550;
   width: 140px;
 }
 
