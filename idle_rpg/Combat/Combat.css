@@ -2,7 +2,33 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: 200px;
+  height: 250px;
+  overflow: auto;
   border-radius: 4px;
   background-color: rgba(240, 240, 240, 0.2);
+  padding: 6px;
 }
+
+.message {
+  padding: 2px 0px;
+}
+
+.player-span {
+  color: #78dce8;
+}
+
+.enemy-span {
+  color: #fc9867;
+}
+
+.value-span {
+  font-weight: 550;
+}
+
+.good {
+  color: #a6e22e;
+}
+.bad {
+  color: #ff6188;
+}
+

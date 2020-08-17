@@ -22,6 +22,10 @@
   background-color: rgba(240,240,240, 0.15);
 }
 
+.top {
+  margin-top: 0px;
+}
+
 .title {
   color: #78DCE8;
   font-size: 13px;

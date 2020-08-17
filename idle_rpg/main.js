@@ -1,8 +1,9 @@
 import { initialize } from "./init.js";
 import { actions, Actions } from "./Actions/Actions.js";
-import { Combat } from "./Combat/Combat.js"
-import { addAttrExp, modifyStat } from "./Character/Character.js";
+import { Combat, fight } from "./Combat/Combat.js";
+import { addAttrExp, modifyStat, rest } from "./Character/Character.js";
 import { TabMenu } from "./components/TabMenu/TabMenu.js";
+import { Adventure } from "./Adventure/Adventure.js";
 
 // Main loop
 async function main() {
@@ -16,50 +17,63 @@ async function main() {
     tick++;
 
     // perform selected action
-    performAction();
-    
+    performAction(tick);
+
     await regulateTickRate(tickRate);
   }
 }
 
 function initialRender() {
   // Render main view
-  const tabContainer = document.getElementById('main-view')
-  const tabMenu = new TabMenu([{
-    label: 'Train',
-    view: new Actions()
-  },{
-    label: 'Adventure',
-    view: new Combat()
-  }]) 
-  
-  tabContainer.appendChild(tabMenu)
+  const tabContainer = document.getElementById("main-view");
+  const tabMenu = new TabMenu([
+    {
+      label: "Train",
+      view: new Actions(),
+    },
+    {
+      label: "Adventure",
+      view: new Adventure(),
+    },
+  ]);
+
+  tabContainer.appendChild(tabMenu);
 }
 
 function regulateTickRate(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function performAction() {
-  const details = actions[window.player.action];
+function performAction(tick) {
+  let details = actions[window.player.action];
 
-  if (details) {
-    switch (details.type) {
-      case "train":
-        details.attrs.forEach((attr) => {
-          addAttrExp(attr.name, attr.value);
-        });
-        details.stats.forEach((stat) => {
-          modifyStat(stat.name, stat.value, details.whenResourcesEmpty, details.whenResourcesMax);
-        });
-        break;
-      case "stat":
-        details.stats.forEach((stat) => {
-          modifyStat(stat.name, stat.value, details.whenResourcesEmpty, details.whenResourcesMax);
-        });
-      default:
-        break;
-    }
+  // If the action does not have properties, just run the actions name.
+  if (!details) {
+    details = { type: window.player.action };
+  }
+
+  switch (details.type) {
+    case "train":
+      details.attrs.forEach((attr) => {
+        addAttrExp(attr.name, attr.value);
+      });
+      details.stats.forEach((stat) => {
+        modifyStat(stat.name, stat.value, details.whenResourcesEmpty, details.whenResourcesMax);
+      });
+      break;
+    case "stat":
+      details.stats.forEach((stat) => {
+        modifyStat(stat.name, stat.value, details.whenResourcesEmpty, details.whenResourcesMax);
+      });
+      break;
+    case "rest":
+      rest();
+      break;
+    case "adventure":
+      fight(tick);
+      break;
+    default:
+      break;
   }
 }
 

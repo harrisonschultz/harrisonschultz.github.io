@@ -5,6 +5,8 @@ import { theme } from '../theme.js';
 export class JobsDetails extends HTMLElement {
   constructor() {
     super();
+
+    document.addEventListener('job-level', this.render)
   }
 
   async connectedCallback() {
@@ -21,15 +23,15 @@ export class JobsDetails extends HTMLElement {
   }
 
   intialRender = () => {
-    const job =  getJob()
-    this.shadowRoot.getElementById("jobs-label").innerHTML = jobs[job.job].label
+    const job = getJob()
+    this.shadowRoot.getElementById("jobs-label").innerHTML = jobs[job.prop].label
     this.shadowRoot.getElementById("jobs-value").innerHTML = job.level.level
 
     const attrBar = new ProgressBar(
-      "jobs-level",
+      "job-progress",
       () => getJobProgress(),
       theme.colors.pastelYellow,
-      { value: false },
+      { value: true, duration: 0.8, resetOnOverflow: true },
       { height: "4px" }
     );
     
@@ -39,7 +41,7 @@ export class JobsDetails extends HTMLElement {
 
   render = () => {
     const job =  getJob()
-    this.shadowRoot.getElementById("jobs-value").innerHTML = job.level.level
+    this.shadowRoot.getElementById("jobs-value").innerHTML = `${job.level.level}`
   }
 }
 
@@ -48,9 +50,12 @@ customElements.define("jobs-details", JobsDetails);
 export const jobs = {
   child: {
     label: 'Child',
+    prop: 'child',
     description: 'You are child with no specific strengths.',
     level: { level: 1, exp: 0 },
     attack: {
+      speed: 1,
+      criticalDamage: 1.5,
       dmgModifiers: [{name: 'str', modifier: 0.5}, {name: 'agi', modifier: 0.5}],
       variance: 0.1 // gives attacks a range of damage by 10% either up or down.
     }

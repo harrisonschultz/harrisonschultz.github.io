@@ -1,4 +1,4 @@
-import { setAction, getAttr, setAvailableActions } from '../../Character/Character.js'
+import { setAction, getAttr, setAvailableActions, secondaryAttributes, getSecondaryAttributeValue } from '../../Character/Character.js'
 import { theme } from '../../theme.js';
 
 export class SecondaryAttributes extends HTMLElement {
@@ -55,7 +55,7 @@ export class SecondaryAttributes extends HTMLElement {
 
       if ( newValue > valueDiv.innerHTML) {
         row.animate( [
-          { color: theme.colors.monokaiGreen},
+          { color: theme.colors.monokaiLightGreen},
           { color: '#fff'},
         ], {
           duration: 1000,
@@ -68,34 +68,3 @@ export class SecondaryAttributes extends HTMLElement {
 }
 
 customElements.define("secondary-attributes", SecondaryAttributes);
-
-export function getSecondaryAttributeValue(attrs) {
-  let value = 0
-  for (const a of attrs) {
-    value += getAttr(a.name).level * a.modifier
-  }
-  return value
-}
-
-export const secondaryAttributes = {
-  critical: {
-    label: 'Critical Chance',
-    attributes: [{ name: 'per', modifier: 0.1}, { name: 'lck', modifier: 1}]
-  },
-  balance: {
-    label: 'Balance',
-    attributes: [{ name: 'str', modifier: 0.1}, { name: 'agi', modifier: 0.1}]
-  },
-  dodge: {
-    label: 'Dodge',
-    attributes: [{ name: 'per', modifier: 0.1}, { name: 'agi', modifier: 0.07}]
-  },
-  block: {
-    label: 'Block',
-    attributes: [{ name: 'per', modifier: 0.1}, { name: 'str', modifier: 0.05}, { name: 'agi', modifier: 0.05}]
-  },
-  deflect: {
-    label: 'Deflect',
-    attributes: [{ name: 'str', modifier: 0.15}, { name: 'agi', modifier: 0.08}]
-  },
-}

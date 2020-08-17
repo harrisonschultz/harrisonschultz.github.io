@@ -7,6 +7,9 @@ export const theme = {
     pastelPurple: "#8675a9",
     pastelPaleGreen: "#7bb38d",
     monokaiBlue: "#78DCE8",
-    monokaiGreen: "#98d55b"
+    monokaiLightGreen: "#98d55b",
+    monokaiPink: "#ff6188",
+    monokaiOrange: "#fc9867",
+    monokaiGreen: "#a6e22e",
   },
 };

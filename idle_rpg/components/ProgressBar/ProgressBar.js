@@ -1,5 +1,5 @@
 export class ProgressBar extends HTMLElement {
-  constructor(event, getter, color, options = undefined, style = {}) {
+  constructor(event, getter, color, options = {}, style = {}) {
     super();
 
     this.getter = getter;
@@ -40,22 +40,45 @@ export class ProgressBar extends HTMLElement {
     this.render();
   };
 
-  render = () => {
-    // Get value
-    const data = this.getter();
+  getDuration = () => {
+    let duration = 0.09;
 
-    const progress = this.shadowRoot.getElementById("progress");
-    const progressValue = this.shadowRoot.getElementById("progress-value");
-
-    // set value
-    if (this.options.value) {
-      progressValue.innerHTML = `${data.current.toFixed(0)} / ${data.max.toFixed(0)}`;
+    if (this.options.duration) {
+      duration = this.options.duration
     }
 
-    // calcuate percentage
-    const width = (data.current / data.max) * 100 - 100;
+    return duration;
+  };
 
-    progress.style.transform = `translate(${width}%)`;
+  render = () => {
+    if (this.shadowRoot) {
+      // Get value
+      const data = this.getter();
+
+      const progress = this.shadowRoot.getElementById("progress");
+      const progressValue = this.shadowRoot.getElementById("progress-value");
+
+      // set value
+      if (this.options.value) {
+        progressValue.innerHTML = `${data.current.toFixed(0)} / ${data.max.toFixed(0)}`;
+      }
+
+      this.oldValue = this.currentValue
+      // calcuate percentage
+      const width = (data.current / data.max) * 100 - 100;
+      this.currentValue = width
+
+      if (this.options.resetOnOverflow && (this.oldValue > this.currentValue || !this.oldValue)) {
+         // Animate bar
+         progress.style.transition = `transform 0.1s linear`;
+         progress.style.transform = `translate(${width}%)`;
+      } else {
+        // Animate bar
+        progress.style.transition = `transform ${this.getDuration()}s linear`;
+        progress.style.transform = `translate(${width}%)`;
+      }
+
+    }
   };
 }
 

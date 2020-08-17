@@ -14,9 +14,21 @@ export function initialize() {
     },
 
     job: {
-      job: "child",
-      level: { level: 1, exp: 0, expNeeded: 0 },
+      prop: 'child',
+      label: 'Child',
+      description: 'You are child with no specific strengths.',
+      level: { level: 1, exp: 0, expNeeded: 0  },
+      tier: 1,
+      attack: {
+        speed: 10,
+        criticalDamage: 1.5,
+        dmgModifiers: [{name: 'str', modifier: 0.5}, {name: 'agi', modifier: 0.5}],
+        variance: 0.1 // gives attacks a range of damage by 10% either up or down.
+      }
     },
+
+    adventure: undefined,
+    adventures: [],
 
     stats: {
       health: { current: 1, max: 1 },

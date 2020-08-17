@@ -1,5 +1,6 @@
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
+import { adventures } from "../Adventure/Adventure.js";
 
 const STR_HEALTH_MODIFIER = 1;
 const INT_MANA_MODIFIER = 1;
@@ -23,7 +24,7 @@ const AGI_STAMINA_MODIFIER = 1;
       document.addEventListener("attr-level", () => this.setMaxStat("health", "str", STR_HEALTH_MODIFIER));
       document.addEventListener("attr-level", () => this.setMaxStat("mana", "int", INT_MANA_MODIFIER));
       document.addEventListener("attr-level", () => this.setMaxStat("stamina", "agi", AGI_STAMINA_MODIFIER));
-      document.addEventListener("character-changed", this.render);
+      document.addEventListener("attr-level", this.render);
     }
 
     connectedCallback() {
@@ -47,7 +48,7 @@ const AGI_STAMINA_MODIFIER = 1;
 
       // Stat bars
       for (const s in window.player.stats) {
-        const statBar = new ProgressBar("character-changed", () => getStat(s), statsColors[s], {
+        const statBar = new ProgressBar("stat-changed", () => getStat(s), statsColors[s], {
           label: s,
           value: true,
         });
@@ -75,14 +76,14 @@ const AGI_STAMINA_MODIFIER = 1;
         barDiv.id = `${s}-bar`;
 
         const attrBar = new ProgressBar(
-          "character-changed",
+          "attr-changed",
           () => getAttrProgress(s),
           theme.colors.pastelGreen,
           { value: false },
           { height: "4px" }
         );
         attrBar.className = "bar";
-        
+
         attrContainer.appendChild(attrRow);
         attrRow.appendChild(detailDiv);
         detailDiv.appendChild(labelDiv);
@@ -143,24 +144,106 @@ export function setAvailableActions(actions) {
   window.player.availableActions = actions;
 }
 
-export function getStat(stat) {
-  return window.player.stats[stat];
+export function getStat(stat, char = window.player) {
+  return char.stats[stat];
 }
 
 export function setStat(stat, statData) {
   window.player.stats[stat] = statData;
+  statChange()
 }
 
-export function getAttr(attr) {
-  return window.player.attrs[attr];
+export function completeAdventure() {
+  resetAdventure()
+  adventureChanged();
+  setAction('rest')
 }
 
-export function getJobProgress() {
-  return { current: window.player.job.level.exp, max: window.player.job.level.expNeeded };
+export function setCurrentEnemy(enemy) {
+  window.player.adventure.currentEnemy = enemy;
 }
 
-export function getJob() {
-  return window.player.job;
+export function addStatCurrent(stat, value, char = window.player) {
+  char.stats[stat].current += value;
+  if (char.stats[stat].current > char.stats[stat].max) {
+    char.stats[stat].current = char.stats[stat].max;
+  } else if (char.stats[stat].current < 0) {
+    char.stats[stat].current = 0;
+  }
+  statChange()
+}
+
+export function subtractStatCurrent(stat, value, char = window.player) {
+  char.stats[stat].current -= value;
+  if (char.stats[stat].current > char.stats[stat].max) {
+    char.stats[stat].current = char.stats[stat].max;
+  } else if (char.stats[stat].current < 0) {
+    char.stats[stat].current = 0;
+  }
+  statChange()
+}
+
+export function getAttr(attr, char = window.player) {
+  return char.attrs[attr];
+}
+
+export function getJobProgress(char = window.player) {
+  return { current: char.job.level.exp, max: char.job.level.expNeeded };
+}
+
+export function getJob(char = window.player) {
+  return char.job;
+}
+
+export function addJobExp(exp, level = false) {
+  const { job } = window.player;
+  // Higher tier jobs require more exp
+  const expMultiplier = job.tier * 3;
+
+  // Add exp and handle levels
+  const totalExpNeeded = 1 * Math.pow(1.1, job.level.level * expMultiplier);
+  const currentExp = job.level.exp;
+  const expLeft = totalExpNeeded - (exp + currentExp);
+
+  // Set the expNeeded
+  job.level.expNeeded = totalExpNeeded;
+
+  if (expLeft < 0) {
+    // If expLeft is less than zero than we have leveled up
+    // Recursively call the function to continue to level.
+    // Base case is when exp amount does not cause us to level up.
+    job.level.level++;
+    job.level.exp = 0;
+    addJobExp(Math.abs(expLeft), true);
+  } else {
+    // Base case hit, call send out event for components to render.
+    job.level.exp = currentExp + exp;
+    jobProgress();
+    if (level) {
+      jobLevel();
+    }
+  }
+}
+
+export function setCombatStartTick(tick) {
+  window.player.combatStartTick = tick;
+}
+
+export function getCombatStartTick() {
+  return window.player.combatStartTick;
+}
+
+export function getSecondaryAttribute(prop, char = window.player) {
+  const attr = secondaryAttributes[prop];
+  return getSecondaryAttributeValue(attr.attributes, char);
+}
+
+export function getSecondaryAttributeValue(attrs, char = window.player) {
+  let value = 0;
+  for (const a of attrs) {
+    value += getAttr(a.name, char).level * a.modifier;
+  }
+  return value;
 }
 
 export function getAttrProgress(attr) {
@@ -188,7 +271,7 @@ export function addAttrExp(attr, exp, level = false) {
   } else {
     // Base case hit, call send out event for components to render.
     attrs[attr].exp = currentExp + exp;
-    charChange();
+    attrChange();
     if (level) {
       attrLevel();
     }
@@ -216,13 +299,80 @@ export function modifyStat(stat, value, whenResourcesEmpty = undefined, whenReso
     }
   }
 
-  charChange();
+  statChange();
+}
+
+export function rest() {
+  const { stats } = window.player;
+  const statsComplete = [];
+
+  // Restore all stats by a percentage
+  for (const stat in window.player.stats) {
+    // Restore each stat by 5%
+    stats[stat].current += stats[stat].max * 0.05;
+
+    // When stat is max
+    if (stats[stat].current > stats[stat].max) {
+      stats[stat].current = stats[stat].max;
+      statsComplete.push(stat);
+    }
+  }
+
+  // Finished Resting
+  if (statsComplete.length === Object.keys(window.player.stats).length) {
+    setAction(window.player.prevAction);
+  }
+
+  statChange();
 }
 
 export function setAction(action) {
   window.player.prevAction = window.player.action;
   window.player.action = action;
+
+  if (action === "rest") {
+    // Reset adventure progress on rest
+    resetAdventure();
+  }
+
   actionChange();
+}
+
+export function resetAdventure() {
+  if (window.player.adventure) {
+    window.player.adventure.currentEnemy = undefined
+    window.player.adventure.progress.current = 0
+  }
+}
+
+export function getAdventure() {
+  return window.player.adventure;
+}
+
+export function getAdventureProgress() {
+  return window.player.adventure.progress;
+}
+
+export function addAdventureProgress(val) {
+  const { progress } = window.player.adventure;
+  let newDistance = progress.current + val;
+
+  if (newDistance > progress.max) {
+    completeAdventure();
+  } else {
+    setAdventureProgress(newDistance);
+  }
+}
+
+export function setAdventureProgress(val) {
+  window.player.adventure.progress.current = val;
+  adventureProgress();
+}
+
+export function setAdventure(adv) {
+  window.player.adventure = {...adv};
+  adventureChanged();
+  adventureProgress();
 }
 
 export function actionChange(data = {}) {
@@ -235,7 +385,76 @@ export function charChange(data = {}) {
   document.dispatchEvent(event);
 }
 
+export function statChange(data = {}) {
+  const event = new CustomEvent("stat-changed", data);
+  document.dispatchEvent(event);
+}
+
+export function jobLevel(data = {}) {
+  const event = new CustomEvent("job-level", data);
+  document.dispatchEvent(event);
+}
+
+export function jobProgress(data = {}) {
+  const event = new CustomEvent("job-progress", data);
+  document.dispatchEvent(event);
+}
+
+export function attrChange(data = {}) {
+  const event = new CustomEvent("attr-changed", data);
+  document.dispatchEvent(event);
+}
+
+export function adventureChanged(data = {}) {
+  const event = new CustomEvent("adventure-changed", data);
+  document.dispatchEvent(event);
+}
+
+export function adventureProgress(data = {}) {
+  const event = new CustomEvent("adventure-progress", data);
+  document.dispatchEvent(event);
+}
+
 export function attrLevel(data = {}) {
   const event = new CustomEvent("attr-level", data);
   document.dispatchEvent(event);
 }
+
+export const secondaryAttributes = {
+  criticalChance: {
+    label: "Critical Chance",
+    attributes: [
+      { name: "per", modifier: 0.1 },
+      { name: "lck", modifier: 1 },
+    ],
+  },
+  balance: {
+    label: "Balance",
+    attributes: [
+      { name: "str", modifier: 0.1 },
+      { name: "agi", modifier: 0.1 },
+    ],
+  },
+  dodge: {
+    label: "Dodge",
+    attributes: [
+      { name: "per", modifier: 0.1 },
+      { name: "agi", modifier: 0.07 },
+    ],
+  },
+  block: {
+    label: "Block",
+    attributes: [
+      { name: "per", modifier: 0.1 },
+      { name: "str", modifier: 0.05 },
+      { name: "agi", modifier: 0.05 },
+    ],
+  },
+  deflect: {
+    label: "Deflect",
+    attributes: [
+      { name: "str", modifier: 0.15 },
+      { name: "agi", modifier: 0.08 },
+    ],
+  },
+};
