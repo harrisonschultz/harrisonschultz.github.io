@@ -1,6 +1,6 @@
 import { getJob, getJobProgress } from '../Character/Character.js'
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
-import { theme } from '../../theme.js';
+import { theme } from '../theme.js';
 
 export class JobsDetails extends HTMLElement {
   constructor() {
