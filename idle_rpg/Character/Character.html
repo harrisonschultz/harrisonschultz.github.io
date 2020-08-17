@@ -5,53 +5,17 @@
     <img id="face-image" src="Assets/rpg-char.png" />
   </div>
 
-  <div class="attributes">
-    <div class="attribute"><div class="bar" id="health-bar"></div></div>
-    <div class="attribute"><div class="bar" id="mana-bar"></div></div>
-    <div class="attribute"><div class="bar" id="stamina-bar"></div></div>
-    <div class="attribute"><div class="bar" id="fatigue-bar"></div></div>
+  <div class="attributes container">
+    <div class="bar" id="health-bar"></div>
+    <div class="bar" id="mana-bar"></div>
+    <div class="bar" id="stamina-bar"></div>
+    <div class="bar" id="fatigue-bar"></div>
   </div>
   <div class="attributes container">
     <div class="title">Class</div>
     <jobs-details></jobs-details>
   </div>
-  <div class="attributes container">
-    <div class="title">Attributes</div>
-    <div class="attribute">
-      <div class="attribute-details">
-        <span class="attribute-label">Agility</span><span id="agi" class="attribute-value"></span>
-      </div>
-      <div class="bar" id="agi-bar"></div>
-    </div>
-
-    <div class="attribute">
-      <div class="attribute-details">
-        <span class="attribute-label">Intelligence</span><span id="int" class="attribute-value"></span>
-      </div>
-      <div class="bar" id="int-bar"></div>
-    </div>
-
-    <div class="attribute">
-      <div class="attribute-details">
-        <span class="attribute-label">Luck</span><span id="lck" class="attribute-value"></span>
-      </div>
-      <div class="bar" id="lck-bar"></div>
-    </div>
-
-    <div class="attribute">
-      <div class="attribute-details">
-        <span class="attribute-label">Perception</span><span id="per" class="attribute-value"></span>
-      </div>
-      <div class="bar" id="per-bar"></div>
-    </div>
-
-    <div class="attribute">
-      <div class="attribute-details">
-        <span class="attribute-label">Strength</span><span id="str" class="attribute-value"></span>
-      </div>
-      <div class="bar" id="str-bar"></div>
-    </div>
-
+  <div id="attributes-container" class="attributes container">
     <div class="secondary-attributes">
       <div class="title">Secondary Attributes</div>
       <secondary-attributes></secondary-attributes>

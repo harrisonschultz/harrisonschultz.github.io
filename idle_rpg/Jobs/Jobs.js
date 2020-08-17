@@ -1,4 +1,4 @@
-import { getJob, getJobProgress } from '../../Character/Character.js'
+import { getJob, getJobProgress } from '../Character/Character.js'
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from '../../theme.js';
 

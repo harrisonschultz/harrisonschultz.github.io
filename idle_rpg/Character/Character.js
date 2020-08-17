@@ -11,7 +11,6 @@ const AGI_STAMINA_MODIFIER = 1;
   const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
 
   class Character extends HTMLElement {
-   
     constructor() {
       super();
 
@@ -21,9 +20,9 @@ const AGI_STAMINA_MODIFIER = 1;
         this.stats = window.player.stats;
       }
 
-      document.addEventListener('attr-level', () =>  this.setMaxStat('health', 'str', STR_HEALTH_MODIFIER))
-      document.addEventListener('attr-level', () =>  this.setMaxStat('mana', 'int', INT_MANA_MODIFIER))
-      document.addEventListener('attr-level', () =>  this.setMaxStat('stamina', 'agi', AGI_STAMINA_MODIFIER))
+      document.addEventListener("attr-level", () => this.setMaxStat("health", "str", STR_HEALTH_MODIFIER));
+      document.addEventListener("attr-level", () => this.setMaxStat("mana", "int", INT_MANA_MODIFIER));
+      document.addEventListener("attr-level", () => this.setMaxStat("stamina", "agi", AGI_STAMINA_MODIFIER));
       document.addEventListener("character-changed", this.render);
     }
 
@@ -43,8 +42,8 @@ const AGI_STAMINA_MODIFIER = 1;
         health: theme.colors.pastelRed,
         mana: theme.colors.pastelBlue,
         stamina: theme.colors.pastelPaleGreen,
-        fatigue: theme.colors.pastelPurple
-      }
+        fatigue: theme.colors.pastelPurple,
+      };
 
       // Stat bars
       for (const s in window.player.stats) {
@@ -56,8 +55,32 @@ const AGI_STAMINA_MODIFIER = 1;
         statBar.className = "bar";
       }
 
+      //   <div class="attribute">
+      //   <div class="attribute-details">
+      //     <span class="attribute-label">Agility</span><span id="agi" class="attribute-value"></span>
+      //   </div>
+      //   <div class="bar" id="agi-bar"></div>
+      // </div>
+
       // Attribute bars
+      const attrContainer = this.shadowRoot.getElementById("attributes-container");
       for (const s in window.player.attrs) {
+        const attr = window.player.attrs[s];
+        const attrRow = document.createElement("div");
+        const detailDiv = document.createElement("div");
+        const labelDiv = document.createElement("div");
+        const valueDiv = document.createElement("div");
+        const barDiv = document.createElement("div");
+
+        attrRow.className = "attribute";
+        detailDiv.className = "attribute-details";
+        labelDiv.className = "attribute-label";
+        labelDiv.innerHTML = attr.label;
+        valueDiv.className = "attribute-value";
+        valueDiv.id = s;
+        barDiv.className = "bar";
+        barDiv.id = `${s}-bar`;
+
         const attrBar = new ProgressBar(
           "character-changed",
           () => getAttrProgress(s),
@@ -65,8 +88,14 @@ const AGI_STAMINA_MODIFIER = 1;
           { value: false },
           { height: "4px" }
         );
-        this.shadowRoot.getElementById(`${s}-bar`).appendChild(attrBar);
         attrBar.className = "bar";
+        
+        attrContainer.insertBefore(attrRow, attrContainer.firstChild);
+        attrRow.appendChild(detailDiv);
+        detailDiv.appendChild(labelDiv);
+        detailDiv.appendChild(valueDiv);
+        attrRow.appendChild(barDiv);
+        barDiv.appendChild(attrBar);
       }
 
       this.render();
@@ -76,28 +105,28 @@ const AGI_STAMINA_MODIFIER = 1;
       @param - Heal sets whether or not increase max hp also raises current by the same amount.
     */
 
-    setMaxStat(stat, attr, mod,  heal = true) {
+    setMaxStat(stat, attr, mod, heal = true) {
       // Strength increases max hp.
       // Maybe also job modifier?
-      const health = getStat(stat)
-      const str = getAttr(attr)
-      const strHealthModifier = mod; 
+      const health = getStat(stat);
+      const str = getAttr(attr);
+      const strHealthModifier = mod;
       const baseHp = 1;
       let newHealthMax;
       let healthIncrease = 0;
-      
-      newHealthMax = str.level * strHealthModifier
+
+      newHealthMax = str.level * strHealthModifier;
       if (health.max !== newHealthMax) {
-        const healthDifference = newHealthMax - health.max; 
-        const newHealth = {...health}
-        newHealth.max = newHealthMax
-        
+        const healthDifference = newHealthMax - health.max;
+        const newHealth = { ...health };
+        newHealth.max = newHealthMax;
+
         if (heal) {
-          newHealth.current += healthDifference
+          newHealth.current += healthDifference;
         }
 
-        setStat(stat, newHealth)
-        this.render()
+        setStat(stat, newHealth);
+        this.render();
       }
     }
 
@@ -114,11 +143,11 @@ const AGI_STAMINA_MODIFIER = 1;
 })();
 
 export function getMaxHealth(actions) {
-  window.player.availableActions = actions
+  window.player.availableActions = actions;
 }
 
 export function setAvailableActions(actions) {
-  window.player.availableActions = actions
+  window.player.availableActions = actions;
 }
 
 export function getStat(stat) {
@@ -130,7 +159,7 @@ export function setStat(stat, statData) {
 }
 
 export function getAttr(attr) {
-  return window.player.attrs[attr]
+  return window.player.attrs[attr];
 }
 
 export function getJobProgress() {
@@ -138,7 +167,7 @@ export function getJobProgress() {
 }
 
 export function getJob() {
-  return window.player.job
+  return window.player.job;
 }
 
 export function getAttrProgress(attr) {

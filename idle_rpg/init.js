@@ -1,28 +1,28 @@
 export function initialize() {
   window.player = {
-    prevAction: 'rest',
-    action: 'rest',
+    prevAction: "rest",
+    action: "rest",
 
-    tab: 'Train',
+    tab: "Train",
 
     attrs: {
-      agi: { level: 1, exp: 0, expNeeded: 0 },
-      int: { level: 1, exp: 0, expNeeded: 0 },
-      lck: { level: 1, exp: 0, expNeeded: 0 },
-      per: { level: 1, exp: 0, expNeeded: 0 },
-      str: { level: 1, exp: 0, expNeeded: 0 },
+      agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
+      int: { label: "Intelligence", level: 1, exp: 0, expNeeded: 0 },
+      lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
+      per: { label: "Perception", level: 1, exp: 0, expNeeded: 0 },
+      str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
     },
 
     job: {
-      job: 'child',
+      job: "child",
       level: { level: 1, exp: 0, expNeeded: 0 },
     },
 
     stats: {
       health: { current: 1, max: 1 },
-      stamina: { current: 10, max: 10 },
+      stamina: { current: 1, max: 1 },
       mana: { current: 1, max: 1 },
-      fatigue: { current: 10, max: 10},
+      fatigue: { current: 10, max: 10 },
     },
   };
 }
