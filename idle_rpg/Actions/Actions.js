@@ -51,12 +51,20 @@ export class Actions extends HTMLElement {
           seperator.className = "button-seperator";
 
           if (act != "rest") {
-            this.shadowRoot.getElementById(act).onclick = () => {
+            this.shadowRoot.getElementById(act).onclick = (event) => {
+              event.target.animate([{ boxShadow: " 0px 0px 3px 2px rgba(255,255,255, 0.25)" }, { boxShadow: "none" }], {
+                duration: 1000,
+                iterations: 1,
+              });
               setAction(act);
             };
           } else {
             // Set rest twice, to prevent resting from reverting back to the previous action.
-            this.shadowRoot.getElementById(act).onclick = () => {
+            this.shadowRoot.getElementById(act).onclick = (event) => {
+              event.target.animate([{ boxShadow: " 0px 0px 3px 2px rgba(255,255,255, 0.25)" }, { boxShadow: "none" }], {
+                duration: 1000,
+                iterations: 1,
+              });
               setAction(act);
               setAction(act);
             };

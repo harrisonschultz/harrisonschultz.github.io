@@ -55,7 +55,7 @@ export class SecondaryAttributes extends HTMLElement {
 
       if ( newValue > valueDiv.innerHTML) {
         row.animate( [
-          { color: theme.colors.pastelGreen},
+          { color: theme.colors.monokaiGreen},
           { color: '#fff'},
         ], {
           duration: 1000,

@@ -65,15 +65,10 @@ export class TabMenu extends HTMLElement {
       t.className = "tab";
       if (t.id === `tab-${getTab()}`) {
         t.className = "tab selected";
-      }
-    }
-
-    for (const tab of this.views) {
-      const currentView = this.shadowRoot.getElementById(`view-${tab.label}`);
-      if (getTab() === tab.label) {
-        currentView.className = "view-container visible";
-      } else {
-        currentView.className = "view-container";
+        t.animate([{ boxShadow: "inset 0px 0px 2px 1px rgba(255,255,255, 0.5)" }, { boxShadow: "none" }], {
+          duration: 1000,
+          iterations: 1,
+        });
       }
     }
 

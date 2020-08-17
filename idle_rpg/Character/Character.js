@@ -55,13 +55,6 @@ const AGI_STAMINA_MODIFIER = 1;
         statBar.className = "bar";
       }
 
-      //   <div class="attribute">
-      //   <div class="attribute-details">
-      //     <span class="attribute-label">Agility</span><span id="agi" class="attribute-value"></span>
-      //   </div>
-      //   <div class="bar" id="agi-bar"></div>
-      // </div>
-
       // Attribute bars
       const attrContainer = this.shadowRoot.getElementById("attributes-container");
       for (const s in window.player.attrs) {
@@ -90,7 +83,7 @@ const AGI_STAMINA_MODIFIER = 1;
         );
         attrBar.className = "bar";
         
-        attrContainer.insertBefore(attrRow, attrContainer.firstChild);
+        attrContainer.appendChild(attrRow);
         attrRow.appendChild(detailDiv);
         detailDiv.appendChild(labelDiv);
         detailDiv.appendChild(valueDiv);
