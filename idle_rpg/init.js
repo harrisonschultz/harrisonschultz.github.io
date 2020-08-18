@@ -27,6 +27,8 @@ export function initialize() {
       }
     },
 
+    skillPoints: {},
+
     adventure: undefined,
     adventures: [],
 

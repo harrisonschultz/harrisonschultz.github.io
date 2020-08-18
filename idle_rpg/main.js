@@ -4,6 +4,7 @@ import { Combat, fight } from "./Combat/Combat.js";
 import { addAttrExp, modifyStat, rest } from "./Character/Character.js";
 import { TabMenu } from "./components/TabMenu/TabMenu.js";
 import { Adventure } from "./Adventure/Adventure.js";
+import { JobsList } from "./Jobs/Jobs.js";
 
 // Main loop
 async function main() {
@@ -34,6 +35,10 @@ function initialRender() {
     {
       label: "Adventure",
       view: new Adventure(),
+    },
+    {
+      label: "Classes",
+      view: new JobsList(),
     },
   ]);
 

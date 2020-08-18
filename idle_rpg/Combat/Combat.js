@@ -147,14 +147,15 @@ export function calculateDamage(attack, attacker, defender) {
   }
 
   // Add variance
+  const variance = 1 - attack.variance + Math.random() * attack.variance * 2;
 
-  finalDmg = baseDmg;
+  finalDmg = baseDmg * variance;
 
   return finalDmg;
 }
 
 export function rollForOnHits(damage, attacker, defender) {
-  const attack = attacker.job.attack
+  const attack = attacker.job.attack;
   let finalDmg = damage;
 
   const critChance = getSecondaryAttribute("criticalChance", attacker);

@@ -1,0 +1,58 @@
+#character-sheet {
+  display: flex;
+  flex-direction: column;
+}
+
+.attributes {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute {
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute-details {
+  display: flex;
+}
+
+
+.bar {
+  flex: 1;
+  display: flex;
+  padding: 2px 0px;
+}
+
+.max-value {
+  width: 80px;
+  text-align: end;
+}
+
+.attribute-label {
+  width: 140px;
+}
+
+#job-title {
+  color: #78DCE8;
+  font-size: 13px;
+  padding-bottom: 6px;
+}
+
+.attribute-value {
+  width: 80px;
+  text-align: end;
+}
+
+#job-skill-points-value {
+  margin-left: auto;
+}
+
+.job-skill-points {
+  display: flex;
+  margin-top: 6px;
+  font-size: 13px;
+}
+

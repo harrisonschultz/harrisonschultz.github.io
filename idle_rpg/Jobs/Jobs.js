@@ -2,7 +2,7 @@ import { getJob, getJobProgress } from '../Character/Character.js'
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from '../theme.js';
 
-export class JobsDetails extends HTMLElement {
+export class JobsList extends HTMLElement {
   constructor() {
     super();
 
@@ -45,7 +45,7 @@ export class JobsDetails extends HTMLElement {
   }
 }
 
-customElements.define("jobs-details", JobsDetails);
+customElements.define("jobs-list", JobsList);
 
 export const jobs = {
   child: {
@@ -54,10 +54,36 @@ export const jobs = {
     description: 'You are child with no specific strengths.',
     level: { level: 1, exp: 0 },
     attack: {
-      speed: 1,
+      speed: 1.5,
       criticalDamage: 1.5,
-      dmgModifiers: [{name: 'str', modifier: 0.5}, {name: 'agi', modifier: 0.5}],
+      dmgModifiers: [{name: 'str', modifier: 0.3}, {name: 'agi', modifier: 0.3}],
       variance: 0.1 // gives attacks a range of damage by 10% either up or down.
+    }
+  },
+
+  urchin: {
+    label: 'Urchin',
+    prop: 'urchin',
+    description: 'As an urchin you have fend for yourself. Your strength and speed will be your only allies.',
+    level: { level: 1, exp: 0 },
+    attack: {
+      speed: 1.5,
+      criticalDamage: 1.5,
+      dmgModifiers: [{name: 'str', modifier: 0.35}, {name: 'agi', modifier: 0.45}],
+      variance: 0.1 // gives attacks a range of damage by 10% either up or down.
+    }
+  },
+
+  student: {
+    label: 'Student',
+    prop: 'student',
+    description: 'A student of the world, a young mind to be molded.',
+    level: { level: 1, exp: 0 },
+    attack: {
+      speed: 2,
+      criticalDamage: 1.8,
+      dmgModifiers: [{name: 'int', modifier: 1}],
+      variance: 0.15 // gives attacks a range of damage by 10% either up or down.
     }
   }
 }

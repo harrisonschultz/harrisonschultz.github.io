@@ -9,7 +9,7 @@ body {
 .column {
   display: flex;
   flex-direction: column;
-  padding: 16px 8px;
+  padding: 12px;
 }
 
 #character-container {

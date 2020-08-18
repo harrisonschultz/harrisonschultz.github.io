@@ -15,13 +15,13 @@ export const enemies = {
       attack: {
         speed: 10, // Speed in game ticks to attack again.
         criticalDamage: 1.5,
-        dmgModifiers: [{ name: "int", modifier: 0.2 }],
+        dmgModifiers: [{ name: "int", modifier: 0.6 }],
         variance: 0.1, // gives attacks a range of damage by 10% either up or down.
       },
     },
 
     stats: {
-      health: { current: 12, max: 1 },
+      health: { current: 12, max: 12 },
       stamina: { current: 1, max: 1 },
       mana: { current: 1, max: 1 },
     },
@@ -45,15 +45,15 @@ export const enemies = {
         speed: 16, // Speed in game ticks to attack again.
         criticalDamage: 2.0,
         dmgModifiers: [
-          { name: "int", modifier: 0.3 },
-          { name: "lck", modifier: 0.1 },
+          { name: "int", modifier: 0.5 },
+          { name: "lck", modifier: .2 },
         ],
         variance: 0.1, // gives attacks a range of damage by 10% either up or down.
       },
     },
 
     stats: {
-      health: { current: 8, max: 1 },
+      health: { current: 8, max: 8 },
       stamina: { current: 1, max: 1 },
       mana: { current: 1, max: 1 },
     },
@@ -82,7 +82,7 @@ export const enemies = {
     },
 
     stats: {
-      health: { current: 10, max: 1 },
+      health: { current: 10, max: 10 },
       stamina: { current: 1, max: 1 },
       mana: { current: 1, max: 1 },
     },

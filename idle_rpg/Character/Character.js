@@ -150,13 +150,13 @@ export function getStat(stat, char = window.player) {
 
 export function setStat(stat, statData) {
   window.player.stats[stat] = statData;
-  statChange()
+  statChange();
 }
 
 export function completeAdventure() {
-  resetAdventure()
+  resetAdventure();
   adventureChanged();
-  setAction('rest')
+  setAction("rest");
 }
 
 export function setCurrentEnemy(enemy) {
@@ -170,7 +170,7 @@ export function addStatCurrent(stat, value, char = window.player) {
   } else if (char.stats[stat].current < 0) {
     char.stats[stat].current = 0;
   }
-  statChange()
+  statChange();
 }
 
 export function subtractStatCurrent(stat, value, char = window.player) {
@@ -180,7 +180,7 @@ export function subtractStatCurrent(stat, value, char = window.player) {
   } else if (char.stats[stat].current < 0) {
     char.stats[stat].current = 0;
   }
-  statChange()
+  statChange();
 }
 
 export function getAttr(attr, char = window.player) {
@@ -220,9 +220,30 @@ export function addJobExp(exp, level = false) {
     job.level.exp = currentExp + exp;
     jobProgress();
     if (level) {
-      jobLevel();
+      levelUpJob();
     }
   }
+}
+
+export function levelUpJob() {
+  // Initialize
+  if (!window.player.skillPoints[window.player.job.prop]) {
+    window.player.skillPoints[window.player.job.prop] = { skillPoints: 0 };
+  }
+
+  // Add skill points
+  window.player.skillPoints[window.player.job.prop].skillPoints++
+
+  jobLevel();
+}
+
+export function getSkillPoints(job) {
+  // Initialize
+  if (!window.player.skillPoints[window.player.job.prop]) {
+    window.player.skillPoints[window.player.job.prop] = { skillPoints: 0 };
+  }
+
+  return window.player.skillPoints[window.player.job.prop].skillPoints;
 }
 
 export function setCombatStartTick(tick) {
@@ -340,8 +361,8 @@ export function setAction(action) {
 
 export function resetAdventure() {
   if (window.player.adventure) {
-    window.player.adventure.currentEnemy = undefined
-    window.player.adventure.progress.current = 0
+    window.player.adventure.currentEnemy = undefined;
+    window.player.adventure.progress.current = 0;
   }
 }
 
@@ -370,7 +391,7 @@ export function setAdventureProgress(val) {
 }
 
 export function setAdventure(adv) {
-  window.player.adventure = {...adv};
+  window.player.adventure = { ...adv };
   adventureChanged();
   adventureProgress();
 }

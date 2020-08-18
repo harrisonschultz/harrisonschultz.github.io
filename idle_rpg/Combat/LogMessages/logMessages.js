@@ -12,7 +12,7 @@ function initializeMessageComponents(message) {
 
   const valueSpan = document.createElement("span");
   valueSpan.className = "value-span";
-  valueSpan.innerHTML = message.value;
+  valueSpan.innerHTML = message.value ? message.value.toFixed(1) : '';
 
   const effectSpan = document.createElement("span");
   effectSpan.className = "effect-span";

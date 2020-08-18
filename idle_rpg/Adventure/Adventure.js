@@ -101,7 +101,12 @@ export function startAdventure(adv) {
 
 export function getRandomEnemy(adventure) {
   const rand = Math.floor(Math.random() * adventure.enemies.length);
-  return enemies[adventure.enemies[rand]];
+  const enemy = enemies[adventure.enemies[rand]]
+  
+  // Refresh
+  enemy.stats.health.current = enemy.stats.health.max
+
+  return enemy;
 }
 
 function checkNewAvailableActions() {
