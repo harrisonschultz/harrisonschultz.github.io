@@ -5,13 +5,13 @@
 .secondary-attributes {
   display: flex;
   flex-direction: column;
-  color: white;
+  color: #f1f1f1;
 }
 
 .secondary-attribute {
   display: flex;
   padding-bottom: 3px;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 .secondary-attributes-value {

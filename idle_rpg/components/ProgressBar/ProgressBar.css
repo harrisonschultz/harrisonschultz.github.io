@@ -1,6 +1,6 @@
 .meter {
   position: relative;
-  border-radius: 2px;
+ 
   width: 100%;
   overflow: hidden;
   background-color: rgba(50, 50, 50, 0.4);
@@ -8,17 +8,17 @@
 
 #label {
   position: absolute;
-  top: 0px;
+  top: 2px;
   left: 8px;
-  color: white;
+  color: #f1f1f1;
   z-index: 1;
 }
 
 #progress-value {
   position: absolute;
-  top: 0px;
+  top: 2px;
   right: 6px;
-  color: white;
+  color: #f1f1f1;
   z-index: 1;
 }
 
@@ -29,7 +29,7 @@
 
 #progress {
   height: 20px;
-  border-radius: 2px;
+ 
   transition: transform 0.09s linear;
 }
 

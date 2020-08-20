@@ -1,15 +1,16 @@
 import { initialize } from "./init.js";
 import { actions, Actions } from "./Actions/Actions.js";
 import { Combat, fight } from "./Combat/Combat.js";
-import { addAttrExp, modifyStat, rest } from "./Character/Character.js";
+import { addAttrExp, modifyStat, rest, elapseTime } from "./Character/Character.js";
 import { TabMenu } from "./components/TabMenu/TabMenu.js";
 import { Adventure } from "./Adventure/Adventure.js";
 import { JobsList } from "./Jobs/Jobs.js";
+import { save } from './core.js'
 
 // Main loop
 async function main() {
   let tick = 0;
-  let tickRate = 100; // game ticks at 1/10 a second (in milliseconds).
+  let tickRate = 100; // milliseconds per tick (default is 100 or 1/10 a second)
 
   initialize();
   initialRender();
@@ -24,6 +25,11 @@ async function main() {
     performAction(tick);
 
     await regulateTickRate(tickRate);
+
+    // Save
+    if (tick % 100) {
+      save()
+    }
   }
 }
 
@@ -46,6 +52,12 @@ function initialRender() {
   ]);
 
   tabContainer.appendChild(tabMenu);
+
+  // Set reset button
+  // document.getElementById('reset').onclick = () => {
+  //   window.localStorage.clear()
+  //   location.reload()
+  // }
 }
 
 function regulateTickRate(ms) {

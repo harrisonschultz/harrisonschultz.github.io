@@ -18,7 +18,7 @@
 
 .container {
   padding: 6px;
-  border-radius: 4px;
+  ;
   background-color: rgba(240,240,240, 0.15);
 }
 
@@ -26,9 +26,29 @@
   margin-top: 0px;
 }
 
+.character-status {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-effect-row {
+  display: flex;
+  padding: 3px 0px;
+  width: 100%;
+}
+
+#buffs-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-effect-duration {
+  margin-left: auto;
+}
+
 .title {
   color: #78DCE8;
-  font-size: 16px;
+  font-size: 12px;
   padding-bottom: 6px;
 }
 
@@ -52,7 +72,7 @@
   margin-bottom: 10px;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 4px;
+  ;
   background-color: rgba(240,240,240, 0.85);
 }
 

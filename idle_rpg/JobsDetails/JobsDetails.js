@@ -6,6 +6,7 @@ import {
    isSkillUnlocked,
    unequipSkill,
    equipSkill,
+   getAnyJob,
    purchaseSkill,
    checkRequirements,
 } from "../Character/Character.js";
@@ -56,6 +57,10 @@ export class JobsDetails extends HTMLElement {
       if (this.options && this.options.withTree) {
          // Job skills panel
          const skillTree = this.shadowRoot.getElementById("job-skill-tree");
+         const title = document.createElement("div");
+         title.className = "req-title";
+         skillTree.appendChild(title);
+
          for (const skill of this.job.skills) {
             const skillDiv = document.createElement("div");
             const skillAction = document.createElement("div");
@@ -134,7 +139,7 @@ export class JobsDetails extends HTMLElement {
                skillAction.appendChild(button);
             } else {
                // Add purchase option
-               const button = new Button(skill, "skills", (skl) => purchaseSkill(this.job, skl), "Purchase");
+               const button = new Button(skill, "skills", (skl) => purchaseSkill(getAnyJob(this.job.prop), skl), "Purchase");
                skillAction.title = "Purchase";
                skillAction.appendChild(button);
             }
@@ -235,7 +240,7 @@ export class JobsDetails extends HTMLElement {
                if (skillAction.title !== "Purchase") {
                   skillAction.removeChild(skillAction.firstChild);
                   // Add purchase option
-                  const button = new Button(skill, "skills", (skl) => purchaseSkill(this.job, skl), "Purchase");
+                  const button = new Button(skill, "skills", (skl) => purchaseSkill(getAnyJob(this.job.prop), skl), "Purchase");
                   skillAction.appendChild(button);
                }
             }

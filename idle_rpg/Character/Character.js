@@ -27,6 +27,8 @@ const SKILL_LIMIT = 5;
          document.addEventListener("attr-level", () => this.setMaxStat("mana", "int", INT_MANA_MODIFIER));
          document.addEventListener("attr-level", () => this.setMaxStat("stamina", "agi", AGI_STAMINA_MODIFIER));
          document.addEventListener("attr-level", this.render);
+         document.addEventListener("status-changed", this.renderBuffs);
+         document.addEventListener("time-elapsed", this.renderBuffs);
       }
 
       connectedCallback() {
@@ -56,6 +58,26 @@ const SKILL_LIMIT = 5;
             });
             this.shadowRoot.getElementById(`${s}-bar`).appendChild(statBar);
             statBar.className = "bar";
+         }
+
+         // Status (Buffs/Debuffs)
+         const buffsContainer = this.shadowRoot.getElementById("buffs-container");
+         for (const eff of getEffects()) {
+            const effDiv = document.createElement("div");
+            const effLabel = document.createElement("div");
+            const effDuration = document.createElement("div");
+            effDiv.className = "character-effect-row";
+            effDiv.id = eff.key;
+            effLabel.className = "character-effect-label";
+            effDuration.className = "character-effect-duration";
+            effDuration.id = `character-buff-duration-${eff.key}`;
+
+            effLabel.innerHTML = eff.label;
+            effDuration.innerHTML = `${eff.duration / 10}s`;
+
+            effDiv.appendChild(effLabel);
+            effDiv.appendChild(effDuration);
+            buffsContainer.appendChild(effDiv);
          }
 
          // Job details
@@ -130,12 +152,52 @@ const SKILL_LIMIT = 5;
          }
       }
 
+      renderBuffs = () => {
+         const effects = getEffects();
+         const buffsContainer = this.shadowRoot.getElementById("buffs-container");
+
+         // Remove expired buffs
+         for (const buffDiv of buffsContainer.children) {
+            if (!effects.find((e) => e.key === buffDiv.id)) {
+               buffDiv.remove();
+            }
+         }
+
+         for (const eff of effects) {
+            const effectDiv = buffsContainer.querySelector(`#character-buff-duration-${eff.key}`);
+
+            // Update if component exists.
+            if (effectDiv) {
+               effectDiv.innerHTML = `${eff.duration / 10}s`;
+            } else {
+               const effDiv = document.createElement("div");
+               const effLabel = document.createElement("div");
+               const effDuration = document.createElement("div");
+               effDiv.className = "character-effect-row";
+               effDiv.id = eff.key;
+               effLabel.className = "character-effect-label";
+               effDuration.className = "character-effect-duration";
+               effDuration.id = `character-buff-duration-${eff.key}`;
+
+               effLabel.innerHTML = eff.label;
+               effDuration.innerHTML = `${eff.duration / 10}s`;
+
+               effDiv.appendChild(effLabel);
+               effDiv.appendChild(effDuration);
+               buffsContainer.appendChild(effDiv);
+            }
+         }
+      };
+
       render = () => {
          if (this.shadowRoot) {
             for (var key in player.attrs) {
                this.shadowRoot.getElementById(key).innerHTML = player.attrs[key].level;
             }
          }
+
+         // Status (Buffs/Debuffs)
+         const buffsContainer = this.shadowRoot.getElementById("buffs-container");
       };
    }
 
@@ -270,7 +332,8 @@ export function getCombatStartTick() {
 
 export function getSecondaryAttribute(prop, char = window.player) {
    const attr = secondaryAttributes[prop];
-   return getSecondaryAttributeValue(attr.attributes, char);
+
+   return getSecondaryAttributeValue(attr, char);
 }
 
 export function getSkills() {
@@ -300,7 +363,6 @@ export function isSkillLimitReached() {
 }
 
 export function equipSkill(skill) {
-   console.log("eqip");
    if (!isSkillEquipped(skill) && !isSkillLimitReached()) {
       window.player.skills.push(skill);
    }
@@ -310,7 +372,7 @@ export function equipSkill(skill) {
 export function purchaseSkill(job, skill) {
    if (isClassUnlocked(job) && job.skillPoints >= skill.cost) {
       window.player.skillsUnlocked.push(skill.key);
-
+      job.skillPoints= job.skillPoints - skill.cost
       // Auto Equip if not maxed on skills
       equipSkill(skill);
    }
@@ -325,12 +387,13 @@ export function isClassUnlocked(job) {
 
 export function checkRequirements(job) {
    for (const req of job.requirements) {
-      console.log(getAnyJob(req.name));
       switch (req.type) {
          case "job":
             if (!(getAnyJob(req.name).level.level >= req.level)) return false;
+            break;
          case "attribute":
             if (!(getAttr(req.name).level >= req.level)) return false;
+            break;
          default:
             break;
       }
@@ -350,24 +413,38 @@ export function useSkills(type, data) {
    return data;
 }
 
+export function getEffects(char = window.player) {
+   return char.effects;
+}
 
-export function applyEffects(type, data) {
-   const skills = getSkills();
+export function getEffect(effect, char = window.player) {
+   return char.effects.find((e) => e.key === effect.key);
+}
 
-   for (const skill of skills) {
-      if (skill.type === type) {
-         data = skill.func(data);
+export function applyEffects(type, data, char = window.player) {
+   const effects = getEffects(char) || [];
+
+   for (const eff of effects) {
+      if (eff.type === type) {
+         data = eff.func(data);
       }
    }
 
    return data;
 }
 
-export function getSecondaryAttributeValue(attrs, char = window.player) {
+export function getSecondaryAttributeValue(secondaryAttr, char = window.player) {
    let value = 0;
-   for (const a of attrs) {
+   for (const a of secondaryAttr.attributes) {
       value += getAttr(a.name, char).level * a.modifier;
    }
+
+   const appliedValue = applyEffects(secondaryAttr.key, value, char);
+
+   if (appliedValue) {
+      value = appliedValue;
+   }
+
    return value;
 }
 
@@ -507,17 +584,20 @@ export function elapseTime(char = window.player) {
       if (eff.duration <= 0) {
          removeEffect(eff, char);
       } else {
-         eff.duration--;
+         eff.duration--
       }
    }
+   timeElapsed();
 }
 
 export function removeEffect(effect, char = window.player) {
    char.effects = char.effects.filter((eff) => eff.key !== effect.key);
+   statusChanged();
 }
 
-export function addEffect(effect) {
-   window.player.effects.push(effect);
+export function addEffect(effect, char = window.player) {
+   char.effects.push({ ...effect });
+   statusChanged();
 }
 
 export function actionChange(data = {}) {
@@ -580,9 +660,20 @@ export function skillUnlocked(data = {}) {
    document.dispatchEvent(event);
 }
 
+export function statusChanged(data = {}) {
+   const event = new CustomEvent("status-changed", data);
+   document.dispatchEvent(event);
+}
+
+export function timeElapsed(data = {}) {
+   const event = new CustomEvent("time-elapsed", data);
+   document.dispatchEvent(event);
+}
+
 export const secondaryAttributes = {
    criticalChance: {
       label: "Critical Chance",
+      key: "criticalChance",
       attributes: [
          { name: "per", modifier: 0.1 },
          { name: "lck", modifier: 1 },
@@ -590,6 +681,7 @@ export const secondaryAttributes = {
    },
    balance: {
       label: "Balance",
+      key: "balance",
       attributes: [
          { name: "str", modifier: 0.1 },
          { name: "agi", modifier: 0.1 },
@@ -597,6 +689,7 @@ export const secondaryAttributes = {
    },
    dodge: {
       label: "Dodge",
+      key: "dodge",
       attributes: [
          { name: "per", modifier: 0.1 },
          { name: "agi", modifier: 0.07 },
@@ -604,6 +697,7 @@ export const secondaryAttributes = {
    },
    block: {
       label: "Block",
+      key: "block",
       attributes: [
          { name: "per", modifier: 0.1 },
          { name: "str", modifier: 0.05 },
@@ -612,6 +706,7 @@ export const secondaryAttributes = {
    },
    deflect: {
       label: "Deflect",
+      key: "deflect",
       attributes: [
          { name: "str", modifier: 0.15 },
          { name: "agi", modifier: 0.08 },

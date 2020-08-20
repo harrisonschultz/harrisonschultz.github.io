@@ -17,6 +17,7 @@ export class SecondaryAttributes extends HTMLElement {
     shadowRoot.appendChild(instance);
 
     document.addEventListener('attr-level', this.render)
+    document.addEventListener('status-changed', this.render)
 
     this.intialRender();
   }
@@ -41,7 +42,7 @@ export class SecondaryAttributes extends HTMLElement {
       labelDiv.id = `secondary-attributes-label-${p}`
       valueDiv.id = `secondary-attributes-value-${p}`
       labelDiv.innerHTML = x.label
-      valueDiv.innerHTML = `${getSecondaryAttributeValue(x.attributes).toFixed(1)}%`
+      valueDiv.innerHTML = `${getSecondaryAttributeValue(x).toFixed(1)}%`
     }
   };
 
@@ -51,12 +52,12 @@ export class SecondaryAttributes extends HTMLElement {
       const row = this.shadowRoot.getElementById(`secondary-attributes-row-${p}`)
       const valueDiv = this.shadowRoot.getElementById(`secondary-attributes-value-${p}`)
 
-      const newValue = getSecondaryAttributeValue(x.attributes).toFixed(1)
+      const newValue = getSecondaryAttributeValue(x).toFixed(1)
 
       if ( newValue > valueDiv.innerHTML) {
         row.animate( [
           { color: theme.colors.monokaiLightGreen},
-          { color: '#fff'},
+          { color: '#f1f1f1'},
         ], {
           duration: 1000,
           iterations: 1

@@ -51,6 +51,7 @@
 }
 
 .job-attack-details-container {
+   margin-top: 12px;
    display: flex;
    flex-direction: column;
 }
@@ -63,7 +64,7 @@
 
 .job-skill-points {
    display: flex;
-   font-size: 18px;
+   font-size: 12px;
 }
 
 .skill-info {
@@ -74,14 +75,12 @@
 }
 
 .skill-selected {
-   background-color: #4a4a4f;
+   background-color: #70707a;
    margin-left: -8px;
    padding-left: 8px;
-   box-shadow: 1px 1px 3px 2px rgba(180, 180, 180, 0.35);
-   border-top-left-radius: 4px;
-   border-bottom-left-radius: 4px;
    transition: all 0.3s;
    height: 40px;
+   box-shadow: 1px 1px 3px 2px rgba(40, 40, 40, 0.6);
 }
 
 .skill-action-container {
@@ -95,7 +94,7 @@
 
 .req-sub-title {
    margin-top: 3px;
-   font-size: 18px;
+   font-size: 12px;
 }
 
 .req-row {
@@ -114,6 +113,10 @@
    margin: 8px 0px;
 }
 
+#job-skill-tree {
+   margin-top: 8px;
+}
+
 .req-value {
    margin-left:auto;
 }
@@ -121,12 +124,12 @@
 .skill-cost {
    margin-left: auto;
    position: relative;
-   z-index: 3;
+   margin-right: 3px;
 }
 
 .skill-flavor {
    font-style: italic;
-   font-size: 14px;
+   font-size: 13px;
    margin-bottom: 8px;
    font-family: sans-serif;
    color: rgba(250, 250, 250, 0.7);
@@ -145,27 +148,26 @@
    left: 100%;
    flex-direction: column;
    width: 240px;
-   background-color: #4a4a4f;
-   box-shadow: 1px 1px 3px 2px rgba(180, 180, 180, 0.35);
+   background-color: #70707a;
+   box-shadow: 1px 1px 3px 2px rgba(40, 40, 40, 0.6);
    padding: 8px 12px;
-   border-radius: 4px;
-   border-top-left-radius: 0px;
 }
 
 .skill-tooltip::after {
    content: "";
-   background-color: #4a4a4f;
+   background-color: #70707a;
    height: 40px;
-   width: 30px;
+   width: 5px;
    position: absolute;
    top: 0px;
-   left: -30px;
+   left: -5px;
    z-index: 2;
 }
 
 .job-icon {
    font-size: 18px;
    margin-right: 3px;
+   display: flex;
 }
 
 .job-attack-detail-container {

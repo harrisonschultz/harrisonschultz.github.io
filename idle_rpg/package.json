@@ -19,5 +19,6 @@
   "bugs": {
     "url": "https://github.com/harrisonschultz/idle_rpg/issues"
   },
-  "homepage": "https://github.com/harrisonschultz/idle_rpg#readme"
+  "homepage": "https://github.com/harrisonschultz/idle_rpg#readme",
+  "dependencies": {}
 }

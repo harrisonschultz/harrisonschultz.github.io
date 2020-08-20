@@ -139,9 +139,8 @@ export const actions = {
     label: "Run",
     conditions: [{ name: "agi", value: 5 }],
     attrs: [
-      { name: "agi", value: 0.03 },
+      { name: "agi", value: 0.04 },
       { name: "str", value: 0.01 },
-      { name: "per", value: 0.01 },
     ],
     stats: [{ name: "fatigue", value: -0.2 }],
   },

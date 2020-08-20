@@ -5,6 +5,7 @@ import {
    getJobProgress,
    addJobExp,
    getAttr,
+   addEffect,
    checkRequirements,
 } from "../Character/Character.js";
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
@@ -75,7 +76,7 @@ export const jobs = {
       label: "Child",
       prop: "child",
       description: "You are child with no specific strengths.",
-      level: { level: 1, exp: 0, expNeeded: 1.1 },
+      level: { level: 10, exp: 0, expNeeded: 1.1 },
       requirements: [],
       tier: 1,
       skillPoints: 1,
@@ -110,16 +111,16 @@ export const jobs = {
       description: "As an urchin you have fend for yourself. Your strength and speed will be your only allies.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
       requirements: [{ type: "job", name: "child", level: 10 }],
-      skillPoints: 0,
+      skillPoints: 2,
       skills: [
         {
           type: "onDodge",
-          label: "Elusive",
-          key: "elusive",
+          label: "Opportunistic",
+          key: "opportunistic",
           cost: 1,
           unlocked: true,
           func: (data) => {
-            addEffect(effects.critOnNextHit)
+            addEffect(effects.oppurtunistic)
           },
           flavor: "An opponent is never more vulnerable than when he puts himself off balance.",
           description: "After a successful dodge, 100% critical chance for the next 2.5s",

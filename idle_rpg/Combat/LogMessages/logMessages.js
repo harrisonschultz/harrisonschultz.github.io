@@ -70,4 +70,21 @@ export function messagePlayerAttack(message) {
   
     return msgDiv;
   }
+
+  export function messageDodge(message) {
+    const { msgDiv, playerSpan, valueSpan, effectSpan, enemySpan } = initializeMessageComponents(message);
+  
+    
+    if (message.enemy === window.player.label) {
+      msgDiv.appendChild(playerSpan)
+      effectSpan.className += " good";
+    } else {
+      msgDiv.appendChild(enemySpan); 
+      effectSpan.className += " bad";
+    }
+    
+    msgDiv.appendChild(effectSpan);
+  
+    return msgDiv;
+  }
   
