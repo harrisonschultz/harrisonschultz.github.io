@@ -79,13 +79,13 @@ export const jobs = {
       level: { level: 1, exp: 0, expNeeded: 1.1 },
       requirements: [],
       tier: 1,
-      skillPoints: 1,
+      skillPoints: 0,
       skills: [
          {
             type: "onRest",
             label: "Pliable",
             key: "pliable",
-            cost: 1,
+            cost: 2,
             unlocked: true,
             func: () => {
                addJobExp(getJob().level.expNeeded * 0.001 + 0.003);
@@ -111,13 +111,13 @@ export const jobs = {
       description: "As an urchin you have fend for yourself. Your strength and speed will be your only allies.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
       requirements: [{ type: "job", name: "child", level: 10 }],
-      skillPoints: 2,
+      skillPoints: 0,
       skills: [
         {
           type: "onDodge",
           label: "Opportunistic",
           key: "opportunistic",
-          cost: 1,
+          cost: 5,
           unlocked: true,
           func: (data) => {
             addEffect(effects.oppurtunistic)
@@ -150,7 +150,7 @@ export const jobs = {
             type: "onKill",
             label: "Observant",
             key: "observant",
-            cost: 2,
+            cost: 4,
             unlocked: true,
             func: (enemy) => {
                // Base exp bonus, and a percentage
