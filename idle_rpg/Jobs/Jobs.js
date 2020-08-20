@@ -11,7 +11,7 @@ import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 import { JobsDetails } from "../JobsDetails/JobsDetails.js";
 import { Button } from "../components/Button/Button.js";
-import { effects } from '../effects'
+import { effects } from '../effects.js'
 
 export class JobsList extends HTMLElement {
    constructor() {
