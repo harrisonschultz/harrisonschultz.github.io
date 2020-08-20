@@ -1,5 +1,4 @@
 import { jobs } from "./Jobs/Jobs.js"
-import { getJob, getJobs, setJob, getJobProgress, addJobExp } from "../Character/Character.js";
 
 export function initialize() {
   window.player = {

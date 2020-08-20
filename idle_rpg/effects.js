@@ -1,4 +1,4 @@
-import { secondaryAttributes } from "./Character/Character";
+import { secondaryAttributes } from "./Character/Character.js";
 
 export const effects = {
     critOnNextHit: {
