@@ -76,7 +76,7 @@ export const jobs = {
       label: "Child",
       prop: "child",
       description: "You are child with no specific strengths.",
-      level: { level: 10, exp: 0, expNeeded: 1.1 },
+      level: { level: 1, exp: 0, expNeeded: 1.1 },
       requirements: [],
       tier: 1,
       skillPoints: 1,
