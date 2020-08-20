@@ -27,7 +27,7 @@ async function main() {
     await regulateTickRate(tickRate);
 
     // Save
-    if (tick % 100) {
+    if (tick % 600 === 0) {
       save()
     }
   }
@@ -54,10 +54,10 @@ function initialRender() {
   tabContainer.appendChild(tabMenu);
 
   // Set reset button
-  // document.getElementById('reset').onclick = () => {
-  //   window.localStorage.clear()
-  //   location.reload()
-  // }
+  document.getElementById('reset').onclick = () => {
+    window.localStorage.clear()
+    location.reload()
+  }
 }
 
 function regulateTickRate(ms) {
