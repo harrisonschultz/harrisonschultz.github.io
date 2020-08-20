@@ -1,10 +1,11 @@
 export class Button extends HTMLElement {
-  constructor(item, prefix, onClick) {
+  constructor(item, prefix, onClick, label) {
     super();
 
     this.action = item;
     this.idPrefix = prefix;
     this.onClick = onClick;
+    this.label = label
   }
 
   async connectedCallback() {
@@ -26,7 +27,7 @@ export class Button extends HTMLElement {
 
     button.className = "action-button";
     button.id = `${this.idPrefix}-${this.action.prop}`;
-    button.innerHTML = this.action.label;
+    button.innerHTML = this.label || this.action.label;
 
     button.onclick = (event) => {
       event.target.animate([{ boxShadow: " 0px 0px 3px 2px rgba(255,255,255, 0.25)" }, { boxShadow: "none" }], {

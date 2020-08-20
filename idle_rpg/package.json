@@ -10,10 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/harrisonschultz/idle_rpg.git"
   },
-  "prettier": {
-    "printWidth": 120
-  },
   "author": "",
+  "prettier": {
+    "printWidth": 120,
+    "tabWidth": 3
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/harrisonschultz/idle_rpg/issues"

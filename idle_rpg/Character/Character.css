@@ -13,7 +13,7 @@
 .attribute {
   display: flex;
   flex-direction: column;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .container {
@@ -28,7 +28,7 @@
 
 .title {
   color: #78DCE8;
-  font-size: 13px;
+  font-size: 16px;
   padding-bottom: 6px;
 }
 
@@ -59,12 +59,13 @@
 .bar {
   flex: 1;
   display: flex;
-  padding: 2px 0px;
+  padding: 3px 0px;
 }
 
 .max-value {
   width: 80px;
   text-align: end;
+  margin-left: auto;
 }
 
 .attribute-label {
@@ -74,4 +75,5 @@
 .attribute-value {
   width: 80px;
   text-align: end;
+  margin-left: auto;
 }

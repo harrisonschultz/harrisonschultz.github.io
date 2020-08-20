@@ -7,6 +7,7 @@ export class ProgressBar extends HTMLElement {
     this.label = options.label;
     this.customStyle = style;
     this.options = options;
+    this.event = event;
 
     // Register event to listen to
     document.addEventListener(event, this.render);

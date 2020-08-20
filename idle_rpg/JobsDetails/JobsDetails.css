@@ -1,58 +1,244 @@
 #character-sheet {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .attributes {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   display: flex;
+   flex-direction: column;
 }
 
 .attribute {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .attribute-details {
-  display: flex;
+   display: flex;
 }
 
-
 .bar {
-  flex: 1;
-  display: flex;
-  padding: 2px 0px;
+   flex: 1;
+   display: flex;
+   padding: 3px 0px;
 }
 
 .max-value {
-  width: 80px;
-  text-align: end;
+   width: 80px;
+   text-align: end;
 }
 
 .attribute-label {
-  width: 140px;
+   width: 140px;
 }
 
 #job-title {
-  color: #78DCE8;
-  font-size: 13px;
-  padding-bottom: 6px;
+   color: #78dce8;
+   font-size: 13px;
+   padding-bottom: 6px;
 }
 
 .attribute-value {
-  width: 80px;
-  text-align: end;
+   width: 80px;
+   text-align: end;
+   margin-left: auto;
 }
 
 #job-skill-points-value {
-  margin-left: auto;
+   margin-left: auto;
+}
+
+.job-attack-details-container {
+   display: flex;
+   flex-direction: column;
+}
+
+.job-attack-details {
+   display: flex;
+   flex-wrap: wrap;
+   margin: 5px 0px 2px 0px;
 }
 
 .job-skill-points {
-  display: flex;
-  margin-top: 6px;
-  font-size: 13px;
+   display: flex;
+   font-size: 18px;
 }
 
+.skill-info {
+   display: flex;
+   position: relative;
+   height: 40px;
+   align-items: center;
+}
+
+.skill-selected {
+   background-color: #4a4a4f;
+   margin-left: -8px;
+   padding-left: 8px;
+   box-shadow: 1px 1px 3px 2px rgba(180, 180, 180, 0.35);
+   border-top-left-radius: 4px;
+   border-bottom-left-radius: 4px;
+   transition: all 0.3s;
+   height: 40px;
+}
+
+.skill-action-container {
+   margin-left: auto;
+}
+
+.req-div {
+   display: flex;
+   flex-direction: column;
+}
+
+.req-sub-title {
+   margin-top: 3px;
+   font-size: 18px;
+}
+
+.req-row {
+   display: flex;
+   padding: 3px 0px 3px 8px;
+}
+
+.req-title {
+   padding-bottom: 2px;
+   border-bottom: 1px solid #fc9867;
+}
+
+.req-container {
+   display: flex;
+   flex-direction: column;
+   margin: 8px 0px;
+}
+
+.req-value {
+   margin-left:auto;
+}
+
+.skill-cost {
+   margin-left: auto;
+   position: relative;
+   z-index: 3;
+}
+
+.skill-flavor {
+   font-style: italic;
+   font-size: 14px;
+   margin-bottom: 8px;
+   font-family: sans-serif;
+   color: rgba(250, 250, 250, 0.7);
+}
+
+.skill-description {
+   margin-bottom: 8px;
+}
+
+.skill-tooltip {
+   opacity: 0;
+   display: none;
+   position: absolute;
+   z-index: 1;
+   top: 0%;
+   left: 100%;
+   flex-direction: column;
+   width: 240px;
+   background-color: #4a4a4f;
+   box-shadow: 1px 1px 3px 2px rgba(180, 180, 180, 0.35);
+   padding: 8px 12px;
+   border-radius: 4px;
+   border-top-left-radius: 0px;
+}
+
+.skill-tooltip::after {
+   content: "";
+   background-color: #4a4a4f;
+   height: 40px;
+   width: 30px;
+   position: absolute;
+   top: 0px;
+   left: -30px;
+   z-index: 2;
+}
+
+.job-icon {
+   font-size: 18px;
+   margin-right: 3px;
+}
+
+.job-attack-detail-container {
+   display: flex;
+   align-items: center;
+   margin: 3px 0px;
+   width: 50%;
+}
+
+/* @-webkit-keyframes fadeInFromNone {
+   0% {
+       display: none;
+       opacity: 0;
+   }
+
+   1% {
+       display: flex;
+       opacity: 0;
+   }
+
+   100% {
+       display: flex;
+       opacity: 1;
+   }
+}
+
+@-moz-keyframes fadeInFromNone {
+   0% {
+       display: none;
+       opacity: 0;
+   }
+
+   1% {
+       display: flex;
+       opacity: 0;
+   }
+
+   100% {
+       display: flex;
+       opacity: 1;
+   }
+}
+
+@-o-keyframes fadeInFromNone {
+   0% {
+       display: none;
+       opacity: 0;
+   }
+
+   1% {
+       display: flex;
+       opacity: 0;
+   }
+
+   100% {
+       display: flex;
+       opacity: 1;
+   }
+}
+
+@keyframes fadeInFromNone {
+   0% {
+       display: none;
+       opacity: 0;
+   }
+
+   1% {
+       display: flex;
+       opacity: 0;
+   }
+
+   100% {
+       display: flex;
+       opacity: 1;
+   }
+} */

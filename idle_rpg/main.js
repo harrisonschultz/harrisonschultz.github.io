@@ -17,6 +17,9 @@ async function main() {
   while (true) {
     tick++;
 
+    // Tick buffs
+    elapseTime()
+
     // perform selected action
     performAction(tick);
 
@@ -37,7 +40,7 @@ function initialRender() {
       view: new Adventure(),
     },
     {
-      label: "Classes",
+      label: "Character",
       view: new JobsList(),
     },
   ]);

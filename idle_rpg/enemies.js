@@ -1,7 +1,7 @@
 export const enemies = {
   feeder: {
     prop: "feeder",
-    label: 'Feeder',
+    label: "Feeder",
     description: "They want you to win, but they need to at least not be afk.",
     attrs: {
       agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
@@ -10,13 +10,16 @@ export const enemies = {
       per: { label: "Perception", level: 1, exp: 0, expNeeded: 0 },
       str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
     },
+    job: "feeder",
 
-    job: {
-      attack: {
-        speed: 10, // Speed in game ticks to attack again.
-        criticalDamage: 1.5,
-        dmgModifiers: [{ name: "int", modifier: 0.6 }],
-        variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+    jobs: {
+      feeder: {
+        attack: {
+          speed: 10, // Speed in game ticks to attack again.
+          criticalDamage: 1.5,
+          dmgModifiers: [{ name: "int", modifier: 0.6 }],
+          variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+        },
       },
     },
 
@@ -30,7 +33,7 @@ export const enemies = {
 
   toxicGamer: {
     prop: "toxicGamer",
-    label: 'Toxic Gamer',
+    label: "Toxic Gamer",
     description: 'Colloquially known as "dumbass teammate", they do at least try harder than the feeder.',
     attrs: {
       agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
@@ -40,15 +43,18 @@ export const enemies = {
       str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
     },
 
-    job: {
-      attack: {
-        speed: 16, // Speed in game ticks to attack again.
-        criticalDamage: 2.0,
-        dmgModifiers: [
-          { name: "int", modifier: 0.5 },
-          { name: "lck", modifier: .2 },
-        ],
-        variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+    job: "toxicGamer",
+    jobs: {
+      toxicGamer: {
+        attack: {
+          speed: 16, // Speed in game ticks to attack again.
+          criticalDamage: 2.0,
+          dmgModifiers: [
+            { name: "int", modifier: 0.5 },
+            { name: "lck", modifier: 0.2 },
+          ],
+          variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+        },
       },
     },
 
@@ -62,7 +68,7 @@ export const enemies = {
 
   afkGamer: {
     prop: "afkGamer",
-    label: 'AFK Gamer',
+    label: "AFK Gamer",
     description: "This person has completed checked out.",
     attrs: {
       agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
@@ -72,12 +78,15 @@ export const enemies = {
       str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
     },
 
-    job: {
-      attack: {
-        speed: 30, // Speed in game ticks to attack again.
-        criticalDamage: 1.5,
-        dmgModifiers: [{ name: "int", modifier: 0 }],
-        variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+    job: "afkGamer",
+    jobs: {
+      afkGamer: {
+        attack: {
+          speed: 30, // Speed in game ticks to attack again.
+          criticalDamage: 1.5,
+          dmgModifiers: [{ name: "int", modifier: 0 }],
+          variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+        },
       },
     },
 
