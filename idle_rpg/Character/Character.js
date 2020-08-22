@@ -554,6 +554,7 @@ export function resetAdventure() {
    if (window.player.adventure) {
       window.player.adventure.currentEnemy = undefined;
       window.player.adventure.progress.current = 0;
+      adventureProgress()
    }
 }
 
