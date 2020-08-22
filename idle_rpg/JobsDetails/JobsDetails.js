@@ -27,6 +27,7 @@ export class JobsDetails extends HTMLElement {
       document.addEventListener("job-level", this.render);
       document.addEventListener("skill-unlocked", this.renderSkills);
       document.addEventListener("skill-equipped", this.renderSkills);
+      document.addEventListener("attr-level", this.render);
    }
 
    async connectedCallback() {
