@@ -155,7 +155,7 @@ export const jobs = {
             func: (enemy) => {
                // Base exp bonus, and a percentage
                const baseExpBonus = 0.1;
-               const percentageExpBonus = (getAttr("int").level / 4) * 0.01; // boost exp by 1/4% of you intellegence
+               const percentageExpBonus = (getAttr("int").level / 2) * 0.01; // boost exp by 1/2% of your intellegence
                const base = enemy.reward.exp * baseExpBonus;
                const percent = enemy.reward.exp * percentageExpBonus;
 
@@ -164,7 +164,7 @@ export const jobs = {
                addJobExp(base + percent);
             },
             flavor: "A blow to the body, is a trove to the mind.",
-            description: "Gain 1/4 of your intelligence as a percentage class exp bonus on kill.",
+            description: "Gain 1/2 of your intelligence as a percentage class exp bonus on kill.",
          },
       ],
       tier: 2,
