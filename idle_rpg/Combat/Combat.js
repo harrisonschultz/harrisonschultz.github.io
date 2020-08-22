@@ -110,7 +110,7 @@ export function fight(tick) {
 
       // Check for player death
       if (getStat("health").current <= 0) {
-         logDeath(window.player);
+         logDeath(window.player.label);
       }
    }
 }
@@ -171,11 +171,9 @@ function awardPlayerForBeingHit(attackSummary, player, defender) {
 }
 
 function deriveFromSecondaryAttributes(secondAttr, defender) {
-   console.log(secondAttr)
    for (const attr of secondAttr.attributes) {
       if (attr.name !== "lck") {
          const exp = attr.modifier * defender.reward.exp * 10000;
-         console.log(`Giving ${attr.name} ${exp} exp`)
          addAttrExp(attr.name, exp);
       }
    }
