@@ -78,7 +78,6 @@
    background-color: #70707a;
    margin-left: -8px;
    padding-left: 8px;
-   transition: all 0.3s;
    height: 40px;
    box-shadow: 1px 1px 3px 2px rgba(40, 40, 40, 0.6);
 }

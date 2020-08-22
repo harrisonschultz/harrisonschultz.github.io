@@ -372,7 +372,7 @@ export function equipSkill(skill) {
 export function purchaseSkill(job, skill) {
    if (isClassUnlocked(job) && job.skillPoints >= skill.cost) {
       window.player.skillsUnlocked.push(skill.key);
-      job.skillPoints= job.skillPoints - skill.cost
+      job.skillPoints = job.skillPoints - skill.cost;
       // Auto Equip if not maxed on skills
       equipSkill(skill);
    }
@@ -411,6 +411,14 @@ export function useSkills(type, data) {
    }
 
    return data;
+}
+
+export function isPlayer(char) {
+   if (typeof char === "object") {
+      return char.label === "You";
+   } else {
+      return char === "You";
+   }
 }
 
 export function getEffects(char = window.player) {
@@ -584,7 +592,7 @@ export function elapseTime(char = window.player) {
       if (eff.duration <= 0) {
          removeEffect(eff, char);
       } else {
-         eff.duration--
+         eff.duration--;
       }
    }
    timeElapsed();

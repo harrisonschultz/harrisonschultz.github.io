@@ -110,7 +110,7 @@ export const jobs = {
       prop: "urchin",
       description: "As an urchin you have fend for yourself. Your strength and speed will be your only allies.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
-      requirements: [{ type: "job", name: "child", level: 10 }],
+      requirements: [{ type: "job", name: "child", level: 10 }, { type: "attribute", name: "str", level: 10 }, { type: "attribute", name: "agi", level: 10 }],
       skillPoints: 0,
       skills: [
         {
@@ -143,7 +143,7 @@ export const jobs = {
       prop: "student",
       description: "A student of the world, a young mind to be molded.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
-      requirements: [{ type: "job", name: "child", level: 10 }],
+      requirements: [{ type: "job", name: "child", level: 10 }, { type: "attribute", name: "int", level: 13 }],
       skillPoints: 0,
       skills: [
          {

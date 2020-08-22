@@ -12,16 +12,13 @@ import {
    setAction,
    addJobExp,
    useSkills,
+   isPlayer,
    applyEffects,
+   addAttrExp,
+   secondaryAttributes,
 } from "../Character/Character.js";
 import { getRandomEnemy } from "../Adventure/Adventure.js";
-import {
-   messagePlayerAttack,
-   messagePlayerHit,
-   messageEnemyDeath,
-   messagePlayerDeath,
-   messageDodge,
-} from "./LogMessages/logMessages.js";
+import { messageAttack, messageDeath, messageBasic, messageAttackCritical } from "./LogMessages/logMessages.js";
 
 const LOG_MAX = 50;
 
@@ -51,20 +48,19 @@ export class Combat extends HTMLElement {
       const message = data.detail;
 
       switch (message.component) {
-         case "playerHit":
-            log.appendChild(messagePlayerHit(message));
+         case "attack":
+            log.appendChild(messageAttack(message));
             break;
-         case "playerAttack":
-            log.appendChild(messagePlayerAttack(message));
+         case "death":
+            log.appendChild(messageDeath(message));
             break;
-         case "playerDeath":
-            log.appendChild(messagePlayerDeath(message));
-            break;
-         case "enemyDeath":
-            log.appendChild(messageEnemyDeath(message));
+         case "critical":
+            log.appendChild(messageAttackCritical(message));
             break;
          case "dodge":
-            log.appendChild(messageDodge(message));
+         case "block":
+         case "deflect":
+            log.appendChild(messageBasic(message));
             break;
          default:
             break;
@@ -96,10 +92,8 @@ export function fight(tick) {
    // Player attack
    const playerJob = getJob();
    if (combatTick != 0 && combatTick % playerJob.attack.speed === 0) {
-      let damage = calculateDamage(playerJob.attack, window.player, adventure.currentEnemy);
-      damage = rollForOnHits(damage, window.player, adventure.currentEnemy);
+      let damage = attack(window.player, adventure.currentEnemy);
       subtractStatCurrent("health", damage, adventure.currentEnemy);
-      logPlayerAttack(damage, adventure.currentEnemy.label);
 
       // Check for enemy death
       if (getStat("health", adventure.currentEnemy).current <= 0) {
@@ -111,14 +105,78 @@ export function fight(tick) {
    // Enemy attack
    const enemyJob = getJob(adventure.currentEnemy);
    if (combatTick != 0 && combatTick % enemyJob.attack.speed === 0) {
-      let damage = calculateDamage(enemyJob.attack, adventure.currentEnemy, window.player);
-      damage = rollForOnHits(damage, adventure.currentEnemy, window.player);
-      logPlayerHit(damage, adventure.currentEnemy.label);
+      let damage = attack(adventure.currentEnemy, window.player);
       subtractStatCurrent("health", damage);
 
       // Check for player death
       if (getStat("health").current <= 0) {
-         playerDeath(adventure.currentEnemy);
+         logDeath(window.player);
+      }
+   }
+}
+
+function attack(attacker, defender) {
+   let intialDamage = calculateDamage(getJob(attacker).attack, attacker, defender);
+   const attackSummary = rollForOnHits(intialDamage, attacker, defender);
+
+   logAttackItem(attackSummary.damage, attacker, defender, attackSummary);
+
+   // award player for attack
+   if (isPlayer(attacker)) {
+      awardPlayerForAttack(attacker, defender);
+   } else {
+      awardPlayerForBeingHit(attackSummary, defender, attacker);
+   }
+
+   return attackSummary.damage;
+}
+
+function logAttackItem(damage, attacker, defender, attackSummary) {
+   if (attackSummary.isDeflected) {
+      logDeflect(damage, attacker.label, defender.label);
+   } else if (attackSummary.isBlocked) {
+      logBlock(damage, attacker.label, defender.label);
+   } else if (attackSummary.isDodged) {
+      logDodge(damage, attacker.label, defender.label);
+   } else if (attackSummary.isCritical) {
+      logAttackCritical(damage, attacker.label, defender.label);
+   } else {
+      logAttack(damage, attacker.label, defender.label);
+   }
+}
+
+function awardPlayerForAttack(player, defender) {
+   const job = getJob(player);
+   for (const attr of job.attack.dmgModifiers) {
+      const exp = attr.modifier * defender.reward.exp;
+      addAttrExp(attr.name, exp);
+   }
+}
+
+function awardPlayerForBeingHit(attackSummary, player, defender) {
+   const hitRewards = [{ name: "str", modifier: 0.4 }];
+
+   if (attackSummary.isDeflected) {
+      deriveFromSecondaryAttributes(secondaryAttributes.deflect, defender);
+   } else if (attackSummary.isBlocked) {
+      deriveFromSecondaryAttributes(secondaryAttributes.block, defender);
+   } else if (attackSummary.isDodged) {
+      deriveFromSecondaryAttributes(secondaryAttributes.dodge, defender);
+   } else {
+      for (const attr of hitRewards) {
+         const exp = attr.modifier * defender.reward.exp;
+         addAttrExp(attr.name, exp);
+      }
+   }
+}
+
+function deriveFromSecondaryAttributes(secondAttr, defender) {
+   console.log(secondAttr)
+   for (const attr of secondAttr.attributes) {
+      if (attr.name !== "lck") {
+         const exp = attr.modifier * defender.reward.exp * 10000;
+         console.log(`Giving ${attr.name} ${exp} exp`)
+         addAttrExp(attr.name, exp);
       }
    }
 }
@@ -126,17 +184,12 @@ export function fight(tick) {
 function enemyDefeated(currentEnemy) {
    awardPlayer(currentEnemy);
 
-   logEnemyDeath(currentEnemy.label);
+   logDeath(currentEnemy.label);
    // Clear enemy
    setCurrentEnemy();
 
    // Move ahead
    addAdventureProgress(1);
-}
-
-function playerDeath() {
-   logPlayerDeath();
-   setAction("rest");
 }
 
 function awardPlayer(enemy) {
@@ -175,6 +228,10 @@ export function calculateDamage(attack, attacker, defender) {
 }
 
 export function rollForOnHits(damage, attacker, defender) {
+   let isCritical,
+      isBlocked,
+      isDodged,
+      isDeflected = false;
    const attack = attacker.jobs[attacker.job].attack;
    let finalDmg = damage;
 
@@ -190,51 +247,75 @@ export function rollForOnHits(damage, attacker, defender) {
    const dodgeRoll = Math.random() * 100;
 
    // Check rolls
-   if (critRoll <= critChance) {
+   isCritical = critRoll <= critChance;
+   isBlocked = blockRoll <= blockChance;
+   isDeflected = deflectRoll <= deflectChance;
+   isDodged = dodgeRoll <= dodgeChance;
+
+   if (isCritical) {
       finalDmg = finalDmg * attack.criticalDamage;
    }
 
    // Check for block
    // If Block then check for deflect
-   if (blockRoll <= blockChance) {
+   if (isBlocked) {
       finalDmg = 0;
-      if (deflectRoll <= deflectChance) {
+      if (isDeflected) {
          // Deflect
       }
    }
 
    // Check for dodge
-   if (dodgeRoll <= dodgeChance) {
+   if (isDodged) {
       useSkills("onDodge", { damage, attacker, defender });
-      logDodge(damage, defender.label);
       finalDmg = 0;
    }
 
-   return finalDmg;
+   return { isCritical, isBlocked, isDodged, isDeflected, damage: finalDmg };
 }
 
-export function logPlayerHit(damage, enemy) {
-   if (damage != 0) {
-      sendMessage({ type: "combat", affects: "player", component: "playerHit", value: damage, enemy });
-   }
+export function logDodge(damage, source, enemy) {
+   sendMessage({
+      type: "combat",
+      component: "dodge",
+      value: damage,
+      enemy,
+      effect: " dodged attack",
+      source,
+   });
+}
+export function logBlock(damage, source, enemy) {
+   sendMessage({
+      type: "combat",
+      component: "block",
+      value: damage,
+      enemy,
+      effect: " blocked attack",
+      source,
+   });
 }
 
-export function logDodge(damage, enemy) {
-   sendMessage({ type: "combat", affects: "player", component: "dodge", value: damage, enemy, effect: " dodged" });
+export function logDeflect(damage, source, enemy) {
+   sendMessage({
+      type: "combat",
+      component: "deflect",
+      value: damage,
+      enemy,
+      effect: " deflected attack",
+      source,
+   });
 }
 
-export function logPlayerAttack(damage, enemy) {
-   if (damage != 0) {
-      sendMessage({ type: "combat", affects: "enemy", component: "playerAttack", value: damage, enemy });
-   }
+export function logAttackCritical(damage, source, enemy) {
+   sendMessage({ type: "combat", component: "critical", source, value: damage, enemy });
 }
 
-export function logPlayerDeath() {
-   sendMessage({ type: "combat", affects: "player", component: "playerDeath", effect: " died" });
+export function logAttack(damage, source, enemy) {
+   if (damage > 0) sendMessage({ type: "combat", component: "attack", source, value: damage, enemy });
 }
 
-export function logEnemyDeath(enemy) {
-   sendMessage({ type: "combat", affects: "enemy", component: "enemyDeath", enemy, effect: " died" });
+export function logDeath(source) {
+   sendMessage({ type: "combat", component: "death", source, effect: " died" });
 }
 
 export function sendMessage(message) {
