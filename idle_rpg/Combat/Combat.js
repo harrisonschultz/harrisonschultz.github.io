@@ -58,12 +58,13 @@ export class Combat extends HTMLElement {
       container.appendChild(log);
 
       const enemyDiv = document.createElement("div");
+      enemyDiv.id = "enemy-parent";
       container.appendChild(enemyDiv);
    };
 
    renderEnemy = () => {
       const container = this.shadowRoot.getElementById("combat-container");
-
+      const enemyParent = this.shadowRoot.getElementById("enemy-parent");
       // Hide previous enemy container
       const enemyContainer = this.shadowRoot.getElementById("enemy-container");
       if (enemyContainer) {
@@ -72,14 +73,16 @@ export class Combat extends HTMLElement {
       }
 
       // Show New Container
-      const enemyStatus = new CharacterStatus(getCurrentEnemy());
-      enemyStatus.id = "enemy-container";
-      enemyStatus.className = "status";
-      container.appendChild(enemyStatus);
+      const enemy = getCurrentEnemy();
+      if (enemy) {
+         const enemyStatus = new CharacterStatus(enemy);
+         enemyStatus.id = "enemy-container";
+         enemyParent.appendChild(enemyStatus);
+      }
 
       // Delete old container
       if (enemyContainer) {
-         container.removeChild(enemyContainer);
+         enemyParent.removeChild(enemyContainer);
       }
    };
 
@@ -161,7 +164,7 @@ export function playerDeath() {
    resetAdventure();
 }
 
-function getAttackBonuses(damage, attack, attacker, defender ) {
+function getAttackBonuses(damage, attack, attacker, defender) {
    if (attack && attack.func) {
       return attack.func({ damage, attack, attacker, defender });
    }
@@ -203,7 +206,7 @@ function logAttackItem(damage, attacker, defender, attackSummary) {
 function awardPlayerForAttack(player, defender) {
    const job = getJob(player);
    for (const attr of job.attack.dmgModifiers) {
-      const exp = (attr.modifier * defender.reward.exp) / 2;
+      const exp = (attr.modifier * defender.reward.exp) / 8;
       addAttrExp(attr.name, exp);
    }
 }
@@ -325,7 +328,12 @@ export function rollForOnHits(damage, attackBonuses, attack, attacker, defender)
    isDodged = dodgeRoll <= dodgeChance;
 
    if (isCritical) {
-      finalDmg = finalDmg * attack.criticalDamage;
+      const effectData = applyEffects("onCritical", { damage: finalDmg, attack });
+      if (effectData) {
+         finalDmg = effectData;
+      } else {
+         finalDmg = finalDmg * attack.criticalDamage;
+      }
    }
 
    // Check for block
@@ -341,6 +349,12 @@ export function rollForOnHits(damage, attackBonuses, attack, attacker, defender)
    if (isDodged) {
       useSkills("onDodge", { damage, attacker, defender });
       finalDmg = 0;
+   }
+
+   const damageBonus = useSkills('onAttack', { damage, attack, attacker, defender } )
+
+   if (damageBonus.damage) {
+      finalDmg = damageBonus.damage
    }
 
    return { isCritical, isBlocked, isDodged, isDeflected, damage: finalDmg };

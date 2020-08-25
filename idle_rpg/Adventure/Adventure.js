@@ -10,6 +10,7 @@ import { Button } from "../components/Button/Button.js";
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 import { enemies } from "../enemies.js";
+import { adventures } from "../adventures.js";
 
 export class Adventure extends HTMLElement {
   constructor() {
@@ -81,19 +82,6 @@ export class Adventure extends HTMLElement {
 
 customElements.define("adventure-list", Adventure);
 
-export const adventures = {
-  eloHell: {
-    prop: "eloHell",
-    type: "fight",
-    tier: 1,
-    tooltip: "ELO Hell, The Trenches, all you know about this place is everyone in here sucks except you.",
-    label: "ELO Hell",
-    progress: { current: 0, max: 7 },
-    enemies: ["toxicGamer", "afkGamer", "feeder"],
-    boss: ["smurf"],
-  },
-};
-
 export function startAdventure(adv) {
   setAction("adventure");
   setAdventure(adv);
@@ -121,12 +109,11 @@ export function getRandomEnemy(adventure) {
 }
 
 function checkNewAvailableActions() {
-  const availableActions = window.player.availableActions;
   const available = [];
 
   const isDifferent = false;
 
-  for (const act of actions) {
+  for (const act of adventure) {
     if (act.conditions) {
       const met = areConditionsMet(act.conditions);
       available.push(met);
@@ -139,11 +126,22 @@ function checkNewAvailableActions() {
   return isDifferent;
 }
 
+export function isAdventureCompleted(adventure) {
+  return window.player.completedAdventures.includes(adventure)
+}
+
 export function areConditionsMet(conditions) {
   for (const s of conditions) {
-    if (getAttr(s.name).level < s.value) {
-      return false;
+    if (s.type === 'attr') {
+      if (getAttr(s.name).level < s.value) {
+        return false;
+      }
+    } else if (s.type === 'adventure') {
+      if (!isAdventureCompleted(s.name)) {
+        return false;
+      }
     }
+   
   }
 
   return true;

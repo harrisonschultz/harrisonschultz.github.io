@@ -1,5 +1,5 @@
 import { jobs } from "./Jobs/Jobs.js";
-import { addEffect, getAnyJob } from "./Character/Character.js";
+import { addEffect, getAnyJob, getStat } from "./Character/Character.js";
 import { effects } from "./effects.js";
 import { load } from "./core.js";
 
@@ -28,8 +28,21 @@ export function initialize() {
 
          adventure: undefined,
          adventures: [],
+         completedAdventures: [],
          effects: [],
-         skills: [],
+         skills: [{
+            type: "onKill",
+            label: "Apex Predator",
+            key: "apexPredator",
+            levelNeeded: 10,
+            func: () => {
+               const apexPredator = { ...effects.apexPredator };
+               addEffect(apexPredator);
+            },
+            flavor: "placeholder",
+            description:
+               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
+         },],
          skillsUnlocked: [],
 
          stats: {

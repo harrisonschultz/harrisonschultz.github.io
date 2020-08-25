@@ -3,6 +3,7 @@ import {
    getJobs,
    setJob,
    getJobProgress,
+   getStat,
    addJobExp,
    getAttr,
    addEffect,
@@ -89,7 +90,7 @@ export const jobs = {
             key: "pliable",
             levelNeeded: 5,
             func: () => {
-               addJobExp(getJob().level.expNeeded * (0.0001 * getAnyJob("child").level) + 0.003);
+               addJobExp(getJob().level.expNeeded * (0.0001 * getAnyJob("child").level.level) + 0.003);
             },
             flavor: "A child's experience takes hold after rest",
             description: "Gain 0.1% of your exp to level per rest tick.",
@@ -255,6 +256,62 @@ export const jobs = {
          criticalDamage: 1.8,
          dmgModifiers: [{ name: "int", modifier: 1 }],
          variance: 0.15, // gives attacks a range of damage by 10% either up or down.
+      },
+   },
+
+   hunter: {
+      label: "Hunter",
+      prop: "hunter",
+      description: "A student of the world, a young mind to be molded.",
+      level: { level: 1, exp: 0, expNeeded: 1.1 },
+      requirements: [
+         { type: "job", name: "urchin", level: 12 },
+         { type: "attribute", name: "agi", level: 25 },
+         { type: "attribute", name: "per", level: 25 },
+      ],
+      skillPoints: 0,
+      skills: [
+         {
+            type: "onAttack",
+            label: "Thrill of the hunt",
+            key: "thrillOfTheHunt",
+            levelNeeded: 7,
+            func: ({ damage, attack, attacker, defender }) => {
+               const stat = getStat("health", defender);
+
+               let newDamage = damage;
+               if (stat.current <= stat.max / 2) {
+                  newDamage = damage * (1.25 + 0.01 * getAnyJob("hunter").level.level);
+               }
+
+               return { damage: newDamage };
+            },
+            flavor: "With every drop of blood, the kill inches closer.",
+            description: "Gain 25% + (1% per class level) bonus damage to enemies below 50% health",
+         },
+         {
+            type: "onKill",
+            label: "Apex Predator",
+            key: "apexPredator",
+            levelNeeded: 10,
+            func: () => {
+               const apexPredator = { ...effects.apexPredator };
+               addEffect(apexPredator);
+            },
+            flavor: "placeholder",
+            description:
+               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
+         },
+      ],
+      tier: 3,
+      attack: {
+         speed: 22,
+         criticalDamage: 1.8,
+         dmgModifiers: [
+            { name: "agi", modifier: 0.45 },
+            { name: "per", modifier: 0.4 },
+         ],
+         variance: 0.1, // gives attacks a range of damage by 10% either up or down.
       },
    },
 };

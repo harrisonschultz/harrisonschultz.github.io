@@ -1,6 +1,6 @@
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
-import { adventures } from "../Adventure/Adventure.js";
+import { adventures } from "../adventures.js";
 import { JobsDetails } from "../JobsDetails/JobsDetails.js";
 import { CharacterStatus } from "../components/CharacterStatus/CharacterStatus.js";
 import { playerDeath, enemyDefeated } from "../Combat/Combat.js";
@@ -153,6 +153,7 @@ export function setStat(stat, statData, char = window.player) {
 }
 
 export function completeAdventure() {
+   window.player.completedAdventures.push(getAdventure().prop)
    resetAdventure();
    adventureChanged();
    setAction("rest");
@@ -736,15 +737,7 @@ export const secondaryAttributes = {
       key: "criticalChance",
       attributes: [
          { name: "per", modifier: 0.1 },
-         { name: "lck", modifier: 1 },
-      ],
-   },
-   balance: {
-      label: "Balance",
-      key: "balance",
-      attributes: [
-         { name: "str", modifier: 0.1 },
-         { name: "agi", modifier: 0.1 },
+         { name: "lck", modifier: 0.8 },
       ],
    },
    dodge: {
@@ -753,6 +746,7 @@ export const secondaryAttributes = {
       attributes: [
          { name: "per", modifier: 0.1 },
          { name: "agi", modifier: 0.07 },
+         { name: "lck", modifier: 0.8 },
       ],
    },
    block: {
@@ -762,6 +756,7 @@ export const secondaryAttributes = {
          { name: "per", modifier: 0.1 },
          { name: "str", modifier: 0.05 },
          { name: "agi", modifier: 0.05 },
+         { name: "lck", modifier: 0.8 },
       ],
    },
    deflect: {
@@ -770,6 +765,7 @@ export const secondaryAttributes = {
       attributes: [
          { name: "str", modifier: 0.15 },
          { name: "agi", modifier: 0.08 },
+         { name: "lck", modifier: 0.8 },
       ],
    },
 };

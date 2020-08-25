@@ -103,7 +103,7 @@ export const actions = {
     tier: 1,
     description: "Collecting Rocks",
     label: "Collect Rocks",
-    attrs: [{ name: "str", value: 0.01 }],
+    attrs: [{ name: "str", value: 0.005 }],
     stats: [{ name: "fatigue", value: -0.1 }],
   },
 
@@ -115,8 +115,8 @@ export const actions = {
     label: "Climb",
     conditions: [{ name: "str", value: 5 }],
     attrs: [
-      { name: "str", value: 0.04 },
-      { name: "agi", value: 0.01 },
+      { name: "str", value: 0.02 },
+      { name: "agi", value: 0.005 },
     ],
     stats: [{ name: "fatigue", value: -0.2 }],
   },
@@ -127,7 +127,7 @@ export const actions = {
     tier: 1,
     description: "Walking",
     label: "Walk",
-    attrs: [{ name: "agi", value: 0.01 }],
+    attrs: [{ name: "agi", value: 0.005 }],
     stats: [{ name: "fatigue", value: -0.1 }],
   },
 
@@ -139,8 +139,8 @@ export const actions = {
     label: "Run",
     conditions: [{ name: "agi", value: 5 }],
     attrs: [
-      { name: "agi", value: 0.04 },
-      { name: "str", value: 0.01 },
+      { name: "agi", value: 0.02 },
+      { name: "str", value: 0.005 },
     ],
     stats: [{ name: "fatigue", value: -0.2 }],
   },
@@ -151,7 +151,7 @@ export const actions = {
     tier: 1,
     description: "Drawing",
     label: "Draw",
-    attrs: [{ name: "int", value: 0.01 }],
+    attrs: [{ name: "int", value: 0.005 }],
     stats: [{ name: "fatigue", value: -0.1 }],
   },
 
@@ -162,7 +162,7 @@ export const actions = {
     description: "Reading",
     label: "Read",
     conditions: [{ name: "int", value: 5 }],
-    attrs: [{ name: "int", value: 0.01 }],
+    attrs: [{ name: "int", value: 0.005 }],
     stats: [{ name: "fatigue", value: -0.1 }],
   },
 
@@ -172,7 +172,7 @@ export const actions = {
     tier: 1,
     description: "Watching Birds",
     label: "Watch Birds",
-    attrs: [{ name: "per", value: 0.01 }],
+    attrs: [{ name: "per", value: 0.005 }],
     stats: [{ name: "fatigue", value: -0.1 }],
   },
 
@@ -188,11 +188,3 @@ export const actions = {
     ],
   },
 };
-
-// adventure: {
-//   type: "adventure",
-//   tier: 2,
-//   description: "Adventuring",
-//   label: "Adventure",
-
-// },

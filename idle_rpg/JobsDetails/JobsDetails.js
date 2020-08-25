@@ -23,6 +23,7 @@ export class JobsDetails extends HTMLElement {
 
       document.addEventListener("job-changed", this.render);
       document.addEventListener("job-level", this.render);
+      document.addEventListener("job-level", this.renderSkills);
       document.addEventListener("skill-unlocked", this.renderSkills);
       document.addEventListener("skill-equipped", this.renderSkills);
       document.addEventListener("attr-level", this.render);
