@@ -98,7 +98,7 @@ export const jobs = {
             type: "whenHit",
             label: "Learn By Example",
             key: "learnByExample",
-            levelNeeded: 1,
+            levelNeeded: 8,
             unlocked: true,
             func: (data) => {
                const { attack } = data;
@@ -140,7 +140,6 @@ export const jobs = {
          { type: "attribute", name: "str", level: 10 },
          { type: "attribute", name: "agi", level: 10 },
       ],
-      skillPoints: 0,
       skills: [
          {
             type: "onDodge",
@@ -161,7 +160,7 @@ export const jobs = {
             type: "attack",
             label: "Swift Slash",
             key: "swiftSlash",
-            levelNeeded: 4,
+            levelNeeded: 3,
             cost: [{ type: "stat", name: "stamina", value: -4 }],
             cooldown: 10,
             func: ({ damage, attack, attacker, defender }) => {
@@ -233,7 +232,7 @@ export const jobs = {
             type: "attack",
             label: "Flame Lash",
             key: "flameLash",
-            levelNeeded: 4,
+            levelNeeded: 6,
             cost: [{ type: "stat", name: "mana", value: -4 }],
             cooldown: 10,
             unlocked: true,
