@@ -7,12 +7,14 @@ import {
    getAttr,
    addEffect,
    checkRequirements,
+   getAnyJob,
+   addAttrExp,
 } from "../Character/Character.js";
 import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 import { JobsDetails } from "../JobsDetails/JobsDetails.js";
 import { Button } from "../components/Button/Button.js";
-import { effects } from '../effects.js'
+import { effects } from "../effects.js";
 
 export class JobsList extends HTMLElement {
    constructor() {
@@ -40,9 +42,9 @@ export class JobsList extends HTMLElement {
       const tier3 = this.shadowRoot.getElementById("jobs-tier-3");
       const tier4 = this.shadowRoot.getElementById("jobs-tier-4");
       const jobTiers = [tier1, tier2, tier3, tier4];
-
-      for (const j in getJobs()) {
-         const job = jobs[j];
+      const charJobs = getJobs();
+      for (const j in charJobs) {
+         const job = charJobs[j];
          const jobDiv = document.createElement("div");
          const jobProgress = new JobsDetails(job, { withTree: true });
 
@@ -85,13 +87,36 @@ export const jobs = {
             type: "onRest",
             label: "Pliable",
             key: "pliable",
-            cost: 2,
-            unlocked: true,
+            levelNeeded: 5,
             func: () => {
-               addJobExp(getJob().level.expNeeded * 0.001 + 0.003);
+               addJobExp(getJob().level.expNeeded * (0.0001 * getAnyJob("child").level) + 0.003);
             },
             flavor: "A child's experience takes hold after rest",
             description: "Gain 0.1% of your exp to level per rest tick.",
+         },
+         {
+            type: "whenHit",
+            label: "Learn By Example",
+            key: "learnByExample",
+            levelNeeded: 1,
+            unlocked: true,
+            func: (data) => {
+               const { attack } = data;
+               for (const attr of attack.dmgModifiers) {
+                  addAttrExp(attr.name, attr.modifier * (0.01 * getAnyJob("child").level.level));
+               }
+            },
+            attack: {
+               speed: 15,
+               criticalDamage: 1.5,
+               dmgModifiers: [
+                  { name: "str", modifier: 0.3 },
+                  { name: "agi", modifier: 0.3 },
+               ],
+               variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+            },
+            flavor: "Learning from the experience gives new insights",
+            description: "Gain experience when striking an enemy based on their attack stats.",
          },
       ],
       attack: {
@@ -110,21 +135,56 @@ export const jobs = {
       prop: "urchin",
       description: "As an urchin you have fend for yourself. Your strength and speed will be your only allies.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
-      requirements: [{ type: "job", name: "child", level: 10 }, { type: "attribute", name: "str", level: 10 }, { type: "attribute", name: "agi", level: 10 }],
+      requirements: [
+         { type: "job", name: "child", level: 10 },
+         { type: "attribute", name: "str", level: 10 },
+         { type: "attribute", name: "agi", level: 10 },
+      ],
       skillPoints: 0,
       skills: [
-        {
-          type: "onDodge",
-          label: "Opportunistic",
-          key: "opportunistic",
-          cost: 5,
-          unlocked: true,
-          func: (data) => {
-            addEffect(effects.oppurtunistic)
-          },
-          flavor: "An opponent is never more vulnerable than when he puts himself off balance.",
-          description: "After a successful dodge, 100% critical chance for the next 2.5s",
-       },
+         {
+            type: "onDodge",
+            label: "Opportunistic",
+            key: "opportunistic",
+            levelNeeded: 5,
+            unlocked: true,
+            func: (data) => {
+               // Multiply duration by level
+               const oppurtunistic = { ...effects.opportunistic };
+               oppurtunistic.duration = oppurtunistic.duration + getAnyJob("urchin").level.level;
+               addEffect(oppurtunistic);
+            },
+            flavor: "An opponent is never more vulnerable than when he puts himself off balance.",
+            description: "After a successful dodge, 100% critical chance for the next 2.5s",
+         },
+         {
+            type: "attack",
+            label: "Swift Slash",
+            key: "swiftSlash",
+            levelNeeded: 4,
+            cost: [{ type: "stat", name: "stamina", value: -4 }],
+            cooldown: 10,
+            func: ({ damage, attack, attacker, defender }) => {
+               return {
+                  secondaryAttributes: [
+                     {
+                        name: "criticalChance",
+                        value: 30 + getAnyJob("urchin").level.level,
+                     },
+                  ],
+               };
+            },
+            attack: {
+               criticalDamage: 2.2,
+               dmgModifiers: [
+                  { name: "str", modifier: 0.35 },
+                  { name: "agi", modifier: 0.45 },
+               ],
+               variance: 0.1, // gives attacks a range of damage by 10% either up or down.
+            },
+            flavor: "A swift blade can inflict greater wounds than the mightiest hammer.",
+            description: "An attack with bonus 30% critical chance, and a 220% critical damage multiplier",
+         },
       ],
       tier: 2,
       attack: {
@@ -143,19 +203,22 @@ export const jobs = {
       prop: "student",
       description: "A student of the world, a young mind to be molded.",
       level: { level: 1, exp: 0, expNeeded: 1.1 },
-      requirements: [{ type: "job", name: "child", level: 10 }, { type: "attribute", name: "int", level: 13 }],
+      requirements: [
+         { type: "job", name: "child", level: 10 },
+         { type: "attribute", name: "int", level: 13 },
+      ],
       skillPoints: 0,
       skills: [
          {
             type: "onKill",
             label: "Observant",
             key: "observant",
-            cost: 4,
+            levelNeeded: 4,
             unlocked: true,
             func: (enemy) => {
                // Base exp bonus, and a percentage
                const baseExpBonus = 0.1;
-               const percentageExpBonus = (getAttr("int").level / 2) * 0.01; // boost exp by 1/2% of your intellegence
+               const percentageExpBonus = (getAttr("int").level / (2 - 0.05 * getAnyJob("urchin").level.level)) * 0.01; // boost exp by 1/2 of your intellegence
                const base = enemy.reward.exp * baseExpBonus;
                const percent = enemy.reward.exp * percentageExpBonus;
 
@@ -165,6 +228,26 @@ export const jobs = {
             },
             flavor: "A blow to the body, is a trove to the mind.",
             description: "Gain 1/2 of your intelligence as a percentage class exp bonus on kill.",
+         },
+         {
+            type: "attack",
+            label: "Flame Lash",
+            key: "flameLash",
+            levelNeeded: 4,
+            cost: [{ type: "stat", name: "mana", value: -4 }],
+            cooldown: 10,
+            unlocked: true,
+            func: ({ damage, attack, attacker, defender }) => {
+               addEffect(effects.flameLash, defender);
+            },
+            attack: {
+               criticalDamage: 1.8,
+               dmgModifiers: [{ name: "int", modifier: 1.5 }],
+               variance: 0.15, // gives attacks a range of damage by 10% either up or down.
+            },
+            flavor: "Strikes in an instance, but the scars never fade.",
+            description:
+               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
          },
       ],
       tier: 2,

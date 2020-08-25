@@ -5,6 +5,7 @@ import {
    setCombatStartTick,
    getCombatStartTick,
    setCurrentEnemy,
+   getCurrentEnemy,
    getSecondaryAttribute,
    addAdventureProgress,
    getAdventure,
@@ -13,13 +14,15 @@ import {
    addJobExp,
    useSkills,
    isPlayer,
+   determineAttack,
    applyEffects,
    addAttrExp,
    secondaryAttributes,
    resetAdventure,
 } from "../Character/Character.js";
-import { getRandomEnemy } from "../Adventure/Adventure.js";
+import { getNextEnemy } from "../Adventure/Adventure.js";
 import { messageAttack, messageDeath, messageBasic, messageAttackCritical } from "./LogMessages/logMessages.js";
+import { CharacterStatus } from "../components/CharacterStatus/CharacterStatus.js";
 
 const LOG_MAX = 50;
 
@@ -28,6 +31,7 @@ export class Combat extends HTMLElement {
       super();
 
       document.addEventListener("log-message", this.appendToLog);
+      document.addEventListener("enemy-changed", this.renderEnemy);
    }
 
    async connectedCallback() {
@@ -39,10 +43,45 @@ export class Combat extends HTMLElement {
       // Clone the template and the cloned node to the shadowDOM's root.
       const instance = HTMLTemplate.content.cloneNode(true);
       shadowRoot.appendChild(instance);
-      this.render();
+      this.initialRender();
    }
 
-   render = () => {};
+   initialRender = () => {
+      const container = this.shadowRoot.getElementById("combat-container");
+      const playerStatus = new CharacterStatus();
+      playerStatus.id = "player-container";
+      playerStatus.className = "status";
+      container.appendChild(playerStatus);
+
+      const log = document.createElement("div");
+      log.id = "log";
+      container.appendChild(log);
+
+      const enemyDiv = document.createElement("div");
+      container.appendChild(enemyDiv);
+   };
+
+   renderEnemy = () => {
+      const container = this.shadowRoot.getElementById("combat-container");
+
+      // Hide previous enemy container
+      const enemyContainer = this.shadowRoot.getElementById("enemy-container");
+      if (enemyContainer) {
+         enemyContainer.style.display = "none";
+         enemyContainer.id = undefined;
+      }
+
+      // Show New Container
+      const enemyStatus = new CharacterStatus(getCurrentEnemy());
+      enemyStatus.id = "enemy-container";
+      enemyStatus.className = "status";
+      container.appendChild(enemyStatus);
+
+      // Delete old container
+      if (enemyContainer) {
+         container.removeChild(enemyContainer);
+      }
+   };
 
    appendToLog = (data) => {
       const log = this.shadowRoot.getElementById("log");
@@ -83,7 +122,7 @@ export function fight(tick) {
    const adventure = getAdventure();
    // Get a random enemy from the current adventure
    if (!adventure.currentEnemy) {
-      setCurrentEnemy(getRandomEnemy(adventure));
+      setCurrentEnemy(getNextEnemy(adventure));
       setCombatStartTick(tick);
    }
 
@@ -112,19 +151,27 @@ export function fight(tick) {
       // Check for player death
       if (getStat("health").current <= 0) {
          logDeath(window.player.label);
-         playerDeath()
+         playerDeath();
       }
    }
 }
 
-function playerDeath() {
-   setAction('rest')
-   resetAdventure()
+export function playerDeath() {
+   setAction("rest");
+   resetAdventure();
+}
+
+function getAttackBonuses(damage, attack, attacker, defender ) {
+   if (attack && attack.func) {
+      return attack.func({ damage, attack, attacker, defender });
+   }
 }
 
 function attack(attacker, defender) {
-   let intialDamage = calculateDamage(getJob(attacker).attack, attacker, defender);
-   const attackSummary = rollForOnHits(intialDamage, attacker, defender);
+   const { attack, skill } = determineAttack(attacker);
+   const initialDamage = calculateDamage(attack, attacker, defender);
+   const attackBonuses = getAttackBonuses(initialDamage, skill, attacker, defender);
+   const attackSummary = rollForOnHits(initialDamage, attackBonuses, attack, attacker, defender);
 
    logAttackItem(attackSummary.damage, attacker, defender, attackSummary);
 
@@ -132,6 +179,7 @@ function attack(attacker, defender) {
    if (isPlayer(attacker)) {
       awardPlayerForAttack(attacker, defender);
    } else {
+      useSkills("whenHit", { initialDamage, attack, attacker, defender });
       awardPlayerForBeingHit(attackSummary, defender, attacker);
    }
 
@@ -155,7 +203,7 @@ function logAttackItem(damage, attacker, defender, attackSummary) {
 function awardPlayerForAttack(player, defender) {
    const job = getJob(player);
    for (const attr of job.attack.dmgModifiers) {
-      const exp = attr.modifier * defender.reward.exp / 2;
+      const exp = (attr.modifier * defender.reward.exp) / 2;
       addAttrExp(attr.name, exp);
    }
 }
@@ -180,13 +228,13 @@ function awardPlayerForBeingHit(attackSummary, player, defender) {
 function deriveFromSecondaryAttributes(secondAttr, defender) {
    for (const attr of secondAttr.attributes) {
       if (attr.name !== "lck") {
-         const exp = attr.modifier * defender.reward.exp / 2;
+         const exp = (attr.modifier * defender.reward.exp) / 2;
          addAttrExp(attr.name, exp);
       }
    }
 }
 
-function enemyDefeated(currentEnemy) {
+export function enemyDefeated(currentEnemy) {
    awardPlayer(currentEnemy);
 
    logDeath(currentEnemy.label);
@@ -228,22 +276,41 @@ export function calculateDamage(attack, attacker, defender) {
    const variance = 1 - attack.variance + Math.random() * attack.variance * 2;
 
    finalDmg = baseDmg * variance;
-
    return finalDmg;
 }
 
-export function rollForOnHits(damage, attacker, defender) {
+export function rollForOnHits(damage, attackBonuses, attack, attacker, defender) {
    let isCritical,
       isBlocked,
       isDodged,
       isDeflected = false;
-   const attack = attacker.jobs[attacker.job].attack;
    let finalDmg = damage;
 
-   const critChance = getSecondaryAttribute("criticalChance", attacker);
-   const blockChance = getSecondaryAttribute("block", defender);
-   const deflectChance = getSecondaryAttribute("deflect", defender);
-   const dodgeChance = getSecondaryAttribute("dodge", defender);
+   let critChance = getSecondaryAttribute("criticalChance", attacker);
+   let blockChance = getSecondaryAttribute("block", defender);
+   let deflectChance = getSecondaryAttribute("deflect", defender);
+   let dodgeChance = getSecondaryAttribute("dodge", defender);
+   // Secondary attribute bonuses
+   if (attackBonuses && attackBonuses.secondaryAttributes) {
+      for (const sa of attackBonuses.secondaryAttributes) {
+         switch (sa.name) {
+            case "criticalChance":
+               critChance += sa.value;
+               break;
+            case "blockChance":
+               blockChance += sa.value;
+               break;
+            case "deflectChance":
+               deflectChance += sa.value;
+               break;
+            case "dodgeChance":
+               dodgeChance += sa.value;
+               break;
+            default:
+               break;
+         }
+      }
+   }
 
    // Roll for on hit effects
    const critRoll = Math.random() * 100;

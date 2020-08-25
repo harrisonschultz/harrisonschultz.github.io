@@ -36,15 +36,15 @@ export function load() {
       }
 
       // Functions cannot be parsed from JSON so objects with functions on them need to be reloaded
-      const newEffects = Array()
+      const newEffects = Array();
       for (let effect of player.effects) {
          effect.func = effects[effect.key].func;
-         newEffects.push(effect)
+         newEffects.push(effect);
       }
-      player.effects = newEffects
-      
+      player.effects = newEffects;
+
       return player;
    } else {
-      return undefined
+      return undefined;
    }
 }

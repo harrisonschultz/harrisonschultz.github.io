@@ -1,34 +1,65 @@
 #log {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 250px;
-  overflow: auto;
-  ;
-  background-color: rgba(240, 240, 240, 0.2);
-  padding: 6px;
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   height: 250px;
+   overflow: auto;
+   background-color: rgba(240, 240, 240, 0.2);
+   padding: 6px;
+   margin: 0px 6px;
+}
+
+#log::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#log::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#log::-webkit-scrollbar-thumb
+{
+  margin: 0px 1px;
+	background-color: #555;;
 }
 
 .message {
-  padding: 2px 0px;
+   padding: 2px 0px;
 }
 
 .player-span {
-  color: #78dce8;
+   color: #78dce8;
 }
 
 .enemy-span {
-  color: #fc9867;
+   color: #fc9867;
 }
 
 .value-span {
-  font-weight: 550;
+   font-weight: 550;
 }
 
 .good {
-  color: #a6e22e;
-}
-.bad {
-  color: #ff6188;
+   color: #a6e22e;
 }
 
+.bad {
+   color: #ff6188;
+}
+
+#combat-container {
+   display: flex;
+   min-height: 220px;
+   justify-content: space-between;
+}
+
+.status {
+   padding: 6px;
+   background-color: rgba(240, 240, 240, 0.15);
+   max-width: 48%;
+   flex: 1;
+}

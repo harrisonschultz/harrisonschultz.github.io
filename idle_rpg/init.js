@@ -1,12 +1,12 @@
 import { jobs } from "./Jobs/Jobs.js";
-import { addEffect } from "./Character/Character.js";
+import { addEffect, getAnyJob } from "./Character/Character.js";
 import { effects } from "./effects.js";
 import { load } from "./core.js";
 
 export function initialize() {
-   const state = load()
+   const state = load();
    if (state) {
-     window.player = state
+      window.player = state;
    } else {
       window.player = {
          prevAction: "rest",

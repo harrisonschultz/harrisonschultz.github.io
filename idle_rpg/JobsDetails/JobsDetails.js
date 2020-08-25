@@ -1,13 +1,11 @@
 import {
    getJob,
    getJobProgress,
-   getSkillPoints,
    isSkillEquipped,
    isSkillUnlocked,
    unequipSkill,
    equipSkill,
    getAnyJob,
-   purchaseSkill,
    checkRequirements,
 } from "../Character/Character.js";
 import { getAttackDamageRange } from "../Combat/Combat.js";
@@ -59,6 +57,7 @@ export class JobsDetails extends HTMLElement {
          // Job skills panel
          const skillTree = this.shadowRoot.getElementById("job-skill-tree");
          const title = document.createElement("div");
+         title.innerHTML = "Skills";
          title.className = "req-title";
          skillTree.appendChild(title);
 
@@ -112,8 +111,15 @@ export class JobsDetails extends HTMLElement {
             skillDescription.innerHTML = skill.description;
 
             skillCost.className = "skill-cost";
-            skillCost.innerHTML = `Cost ${skill.cost}`;
-
+            const skillLockIcon = document.createElement("span");
+            const skillLockText = document.createElement("span");
+            if (!isSkillUnlocked(skill, this.job)) {
+               skillLockIcon.className = "lock-icon mdi mdi-lock";
+               skillLockIcon.style.color = theme.colors.pastelRed;
+               skillLockText.innerHTML = `${skill.levelNeeded}`;
+            }
+            skillCost.appendChild(skillLockIcon);
+            skillCost.appendChild(skillLockText);
             skillFlavor.className = "skill-flavor";
             skillFlavor.innerHTML = `"${skill.flavor}"`;
 
@@ -131,19 +137,15 @@ export class JobsDetails extends HTMLElement {
                const button = new Button(skill, "skills", (skl) => unequipSkill(skl), "Unequip");
                skillAction.title = "Unequip";
                skillAction.appendChild(button);
-            } else if (isSkillUnlocked(skill)) {
+            } else if (isSkillUnlocked(skill, this.job)) {
                skillDiv.className += "skill-unlocked";
 
                // Add equip option
                const button = new Button(skill, "skills", (skl) => equipSkill(skl), "Equip");
                skillAction.title = "Equip";
                skillAction.appendChild(button);
-            } else {
-               // Add purchase option
-               const button = new Button(skill, "skills", (skl) => purchaseSkill(getAnyJob(this.job.prop), skl), "Purchase");
-               skillAction.title = "Purchase";
-               skillAction.appendChild(button);
             }
+
             tooltip.append(skillAction);
             skillTree.appendChild(skillDiv);
          }
@@ -220,28 +222,22 @@ export class JobsDetails extends HTMLElement {
                // Remove and add new Button if it should be changed.
                const skillAction = this.shadowRoot.getElementById(`skill-action-${skill.key}`);
                if (skillAction.title !== "Unequip") {
+                  skillAction.title = "Unequip";
                   skillAction.removeChild(skillAction.firstChild);
                   // Add unequip option
                   const button = new Button(skill, "skills", (skl) => unequipSkill(skl), "Unequip");
                   skillAction.appendChild(button);
                }
-            } else if (isSkillUnlocked(skill)) {
+            } else if (isSkillUnlocked(skill, this.job)) {
                skillDiv.className += "skill-unlocked";
                // Remove and add new Button if it should be changed.
                const skillAction = this.shadowRoot.getElementById(`skill-action-${skill.key}`);
                if (skillAction.title !== "Equip") {
+                  skillAction.title = "Equip";
                   skillAction.removeChild(skillAction.firstChild);
-                  // Add unequip option
+                  console.log(skill.key, "adding equip");
+                  // Add equip option
                   const button = new Button(skill, "skills", (skl) => equipSkill(skl), "Equip");
-                  skillAction.appendChild(button);
-               }
-            } else {
-               // Remove and add new Button if it should be changed.
-               const skillAction = this.shadowRoot.getElementById(`skill-action-${skill.key}`);
-               if (skillAction.title !== "Purchase") {
-                  skillAction.removeChild(skillAction.firstChild);
-                  // Add purchase option
-                  const button = new Button(skill, "skills", (skl) => purchaseSkill(getAnyJob(this.job.prop), skl), "Purchase");
                   skillAction.appendChild(button);
                }
             }
@@ -257,11 +253,6 @@ export class JobsDetails extends HTMLElement {
       if (this.shadowRoot) {
          this.shadowRoot.getElementById("jobs-label").innerHTML = this.job.label;
          this.shadowRoot.getElementById("jobs-value").innerHTML = `${this.job.level.level}`;
-
-         if (checkRequirements(this.job)) {
-            this.shadowRoot.getElementById("job-skill-points-label").innerHTML = "Skill Points";
-            this.shadowRoot.getElementById("job-skill-points-value").innerHTML = getSkillPoints(this.job.prop);
-         }
 
          // Add job stats
          const dmg = this.shadowRoot.getElementById("job-attack-damage-value");

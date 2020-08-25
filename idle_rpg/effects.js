@@ -1,11 +1,24 @@
-import { secondaryAttributes } from "./Character/Character.js";
+import { secondaryAttributes, getAnyJob, getStat, setStat } from "./Character/Character.js";
 
 export const effects = {
-    opportunistic: {
-        label: 'Opportunistic',
-        key: 'opportunistic',
-        type: "criticalChance",
-        func: (data) => 100,
-        duration: 25,
-    }
-}
+   opportunistic: {
+      label: "Opportunistic",
+      key: "opportunistic",
+      type: "criticalChance",
+      func: (data) => 100,
+      duration: 25,
+      durationOnRefresh: 25
+   },
+   flameLash: {
+      label: "Flame Lash",
+      key: "flameLash",
+      type: "overTime",
+      func: ({char}) => {
+         const stat = getStat("health", char);
+         stat.current = stat.current - stat.max * 0.001 * getAnyJob("student").level.level;
+         setStat("health", stat, char);
+      },
+      duration: 80,
+      durationOnRefresh: 80
+   },
+};

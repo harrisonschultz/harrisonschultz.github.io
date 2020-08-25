@@ -99,6 +99,17 @@ export function startAdventure(adv) {
   setAdventure(adv);
 }
 
+export function getNextEnemy(adventure) {
+  // Check for boss.
+  if (adventure.progress.current >= adventure.progress.max) {
+    return enemies[adventure.boss[0]]
+  } else {
+    return getRandomEnemy(adventure)
+  }
+
+}
+
+
 export function getRandomEnemy(adventure) {
   const rand = Math.floor(Math.random() * adventure.enemies.length);
   const enemy = enemies[adventure.enemies[rand]]

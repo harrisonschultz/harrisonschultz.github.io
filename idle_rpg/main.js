@@ -27,7 +27,7 @@ async function main() {
     await regulateTickRate(tickRate);
 
     // Save
-    if (tick % 600 === 0) {
+    if (tick % 100 === 0) {
       save()
     }
   }

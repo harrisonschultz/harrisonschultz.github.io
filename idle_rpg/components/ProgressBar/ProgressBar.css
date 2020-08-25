@@ -1,8 +1,8 @@
 .meter {
   position: relative;
- 
   width: 100%;
   overflow: hidden;
+  height: 20px;
   background-color: rgba(50, 50, 50, 0.4);
 }
 
@@ -29,7 +29,6 @@
 
 #progress {
   height: 20px;
- 
   transition: transform 0.09s linear;
 }
 

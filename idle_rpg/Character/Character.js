@@ -2,6 +2,8 @@ import { ProgressBar } from "../components/ProgressBar/ProgressBar.js";
 import { theme } from "../theme.js";
 import { adventures } from "../Adventure/Adventure.js";
 import { JobsDetails } from "../JobsDetails/JobsDetails.js";
+import { CharacterStatus } from "../components/CharacterStatus/CharacterStatus.js";
+import { playerDeath, enemyDefeated } from "../Combat/Combat.js";
 
 const STR_HEALTH_MODIFIER = 1;
 const INT_MANA_MODIFIER = 1;
@@ -42,43 +44,9 @@ const SKILL_LIMIT = 5;
       }
 
       initialRender = () => {
-         // Create the progress bars.
-         const statsColors = {
-            health: theme.colors.pastelRed,
-            mana: theme.colors.pastelBlue,
-            stamina: theme.colors.pastelPaleGreen,
-            fatigue: theme.colors.pastelPurple,
-         };
-
-         // Stat bars
-         for (const s in window.player.stats) {
-            const statBar = new ProgressBar("stat-changed", () => getStat(s), statsColors[s], {
-               label: s,
-               value: true,
-            });
-            this.shadowRoot.getElementById(`${s}-bar`).appendChild(statBar);
-            statBar.className = "bar";
-         }
-
-         // Status (Buffs/Debuffs)
-         const buffsContainer = this.shadowRoot.getElementById("buffs-container");
-         for (const eff of getEffects()) {
-            const effDiv = document.createElement("div");
-            const effLabel = document.createElement("div");
-            const effDuration = document.createElement("div");
-            effDiv.className = "character-effect-row";
-            effDiv.id = eff.key;
-            effLabel.className = "character-effect-label";
-            effDuration.className = "character-effect-duration";
-            effDuration.id = `character-buff-duration-${eff.key}`;
-
-            effLabel.innerHTML = eff.label;
-            effDuration.innerHTML = `${eff.duration / 10}s`;
-
-            effDiv.appendChild(effLabel);
-            effDiv.appendChild(effDuration);
-            buffsContainer.appendChild(effDiv);
-         }
+         // Status
+         const characterStatus = new CharacterStatus();
+         this.shadowRoot.getElementById("status-container").appendChild(characterStatus);
 
          // Job details
          const jobDetails = new JobsDetails(undefined, { self: true });
@@ -152,43 +120,6 @@ const SKILL_LIMIT = 5;
          }
       }
 
-      renderBuffs = () => {
-         const effects = getEffects();
-         const buffsContainer = this.shadowRoot.getElementById("buffs-container");
-
-         // Remove expired buffs
-         for (const buffDiv of buffsContainer.children) {
-            if (!effects.find((e) => e.key === buffDiv.id)) {
-               buffDiv.remove();
-            }
-         }
-
-         for (const eff of effects) {
-            const effectDiv = buffsContainer.querySelector(`#character-buff-duration-${eff.key}`);
-
-            // Update if component exists.
-            if (effectDiv) {
-               effectDiv.innerHTML = `${eff.duration / 10}s`;
-            } else {
-               const effDiv = document.createElement("div");
-               const effLabel = document.createElement("div");
-               const effDuration = document.createElement("div");
-               effDiv.className = "character-effect-row";
-               effDiv.id = eff.key;
-               effLabel.className = "character-effect-label";
-               effDuration.className = "character-effect-duration";
-               effDuration.id = `character-buff-duration-${eff.key}`;
-
-               effLabel.innerHTML = eff.label;
-               effDuration.innerHTML = `${eff.duration / 10}s`;
-
-               effDiv.appendChild(effLabel);
-               effDiv.appendChild(effDuration);
-               buffsContainer.appendChild(effDiv);
-            }
-         }
-      };
-
       render = () => {
          if (this.shadowRoot) {
             for (var key in player.attrs) {
@@ -216,8 +147,8 @@ export function getStat(stat, char = window.player) {
    return char.stats[stat];
 }
 
-export function setStat(stat, statData) {
-   window.player.stats[stat] = statData;
+export function setStat(stat, statData, char = window.player) {
+   char.stats[stat] = statData;
    statChange();
 }
 
@@ -229,10 +160,17 @@ export function completeAdventure() {
 
 export function setCurrentEnemy(enemy) {
    window.player.adventure.currentEnemy = enemy;
+   enemyChanged();
+}
+
+export function enemyChanged(data = {}) {
+   const event = new CustomEvent("enemy-changed", data);
+   document.dispatchEvent(event);
 }
 
 export function addStatCurrent(stat, value, char = window.player) {
-   char.stats[stat].current += value;
+   char.stats[stat].current = char.stats[stat].current + value;
+
    if (char.stats[stat].current > char.stats[stat].max) {
       char.stats[stat].current = char.stats[stat].max;
    } else if (char.stats[stat].current < 0) {
@@ -242,12 +180,38 @@ export function addStatCurrent(stat, value, char = window.player) {
 }
 
 export function subtractStatCurrent(stat, value, char = window.player) {
-   char.stats[stat].current -= value;
+   char.stats[stat].current = char.stats[stat].current - value;
+
    if (char.stats[stat].current > char.stats[stat].max) {
       char.stats[stat].current = char.stats[stat].max;
    } else if (char.stats[stat].current < 0) {
       char.stats[stat].current = 0;
    }
+   statChange();
+}
+
+export function applyOverTimeEffects(char) {
+   applyEffects(
+      "overTime",
+      {
+         char,
+      },
+      char
+   );
+
+   const adventure = getAdventure();
+   if (adventure && adventure.currentEnemy) {
+      // Check for enemy death
+      if (getStat("health", adventure.currentEnemy).current <= 0) {
+         enemyDefeated(char);
+      }
+   }
+
+   // Player death
+   if (getStat("health").current <= 0) {
+      playerDeath();
+   }
+
    statChange();
 }
 
@@ -265,6 +229,10 @@ export function getJobProgress(char = window.player, jobName = undefined) {
 
 export function getAnyJob(jobName, char = window.player) {
    return char.jobs[jobName];
+}
+
+export function getStats(char = window.player) {
+   return char.stats;
 }
 
 export function getJob(char = window.player) {
@@ -336,22 +304,24 @@ export function getSecondaryAttribute(prop, char = window.player) {
    return getSecondaryAttributeValue(attr, char);
 }
 
-export function getSkills() {
-   return window.player.skills;
+export function getSkills(char = window.player, type = undefined) {
+   if (type && char.skills) {
+      return char.skills.filter((skill) => type === skill.type);
+   }
+   return char.skills;
 }
 
 export function isSkillEquipped(skill) {
    return !!window.player.skills.find((s) => s.key === skill.key);
 }
 
-export function isSkillUnlocked(skill) {
-   return !!window.player.skillsUnlocked.find((s) => s === skill.key);
+export function isSkillUnlocked(skill, job) {
+   return skill.levelNeeded <= job.level.level;
 }
 
 export function unequipSkill(skill) {
    if (isSkillEquipped(skill)) {
       window.player.skills = window.player.skills.filter((s) => {
-         console.log(s.key);
          return s.key !== skill.key;
       });
    }
@@ -367,18 +337,6 @@ export function equipSkill(skill) {
       window.player.skills.push(skill);
    }
    skillEquipped();
-}
-
-export function purchaseSkill(job, skill) {
-   if (isClassUnlocked(job) && job.skillPoints >= skill.cost) {
-      window.player.skillsUnlocked.push(skill.key);
-      job.skillPoints = job.skillPoints - skill.cost;
-      // Auto Equip if not maxed on skills
-      equipSkill(skill);
-   }
-
-   skillUnlocked();
-   jobLevel();
 }
 
 export function isClassUnlocked(job) {
@@ -431,14 +389,17 @@ export function getEffect(effect, char = window.player) {
 
 export function applyEffects(type, data, char = window.player) {
    const effects = getEffects(char) || [];
+   let returnValue = undefined;
 
    for (const eff of effects) {
       if (eff.type === type) {
-         data = eff.func(data);
+         returnValue = eff.func(data);
       }
    }
 
-   return data;
+   if (returnValue) {
+      return returnValue;
+   }
 }
 
 export function getSecondaryAttributeValue(secondaryAttr, char = window.player) {
@@ -447,7 +408,7 @@ export function getSecondaryAttributeValue(secondaryAttr, char = window.player) 
       value += getAttr(a.name, char).level * a.modifier;
    }
 
-   const appliedValue = applyEffects(secondaryAttr.key, value, char);
+   const appliedValue = applyEffects(secondaryAttr.key, value, char) || value;
 
    if (appliedValue) {
       value = appliedValue;
@@ -554,7 +515,7 @@ export function resetAdventure() {
    if (window.player.adventure) {
       window.player.adventure.currentEnemy = undefined;
       window.player.adventure.progress.current = 0;
-      adventureProgress()
+      adventureProgress();
    }
 }
 
@@ -562,8 +523,85 @@ export function getAdventure() {
    return window.player.adventure;
 }
 
+export function getCurrentEnemy() {
+   return window.player.adventure.currentEnemy;
+}
+
 export function getAdventureProgress() {
    return window.player.adventure.progress;
+}
+
+export function determineAttack(char = window.player) {
+   const skills = getSkills(char, "attack") || [];
+   const readySkills = []; // Store attacks that can be used.
+
+   for (const skl of skills) {
+      if (isSkillReady(skl, char)) {
+         readySkills.push(skl);
+      }
+   }
+
+   // Randomly choose one? I guess for now.
+   const randomIndex = Math.floor(Math.random() * readySkills.length);
+   const skill = readySkills[randomIndex];
+
+   if (skill) {
+      // Pay for it
+      paySkill(skill);
+      // If no skill is available just normal attack.
+      return { attack: skill.attack, skill };
+   } else {
+      return { attack: getJob(char).attack };
+   }
+}
+
+export function paySkill(skill) {
+   if (skill.cost) {
+      for (const cost of skill.cost)
+         switch (cost.type) {
+            case "stat":
+               modifyStat(cost.name, cost.value);
+               break;
+            default:
+               break;
+         }
+   }
+}
+
+export function isSkillReady(skill, char = window.player) {
+   let ready = true;
+
+   if (skill.isReady && !skill.isReady()) {
+      return false;
+   }
+
+   if (skill.readyConditions) {
+      for (const condition of skill.readyConditions) {
+         if (condition.type === "stat" && getStat(condition.name, char).current >= condition.need) {
+            return false;
+         }
+      }
+   }
+
+   if (skill.cost) {
+      for (const cost of skill.cost) {
+         switch (cost.type) {
+            case "stat":
+               if (!hasEnoughStat(cost.name, cost.value, char)) {
+                  return false;
+               }
+               break;
+            default:
+               break;
+         }
+      }
+   }
+
+   return ready;
+}
+
+export function hasEnoughStat(stat, value, char = window.player) {
+   return getStat(stat, char).current >= Math.abs(value);
 }
 
 export function addAdventureProgress(val) {
@@ -588,12 +626,20 @@ export function setAdventure(adv) {
    adventureProgress();
 }
 
-export function elapseTime(char = window.player) {
-   for (const eff of char.effects) {
-      if (eff.duration <= 0) {
-         removeEffect(eff, char);
-      } else {
-         eff.duration--;
+export function elapseTime() {
+   const chars = [window.player];
+   const adventure = getAdventure();
+   if (adventure && adventure.currentEnemy) {
+      chars.push(adventure.currentEnemy);
+   }
+   for (const char of chars) {
+      for (const eff of char.effects) {
+         applyOverTimeEffects(char);
+         if (eff.duration <= 0) {
+            removeEffect(eff, char);
+         } else {
+            eff.duration--;
+         }
       }
    }
    timeElapsed();
@@ -605,7 +651,12 @@ export function removeEffect(effect, char = window.player) {
 }
 
 export function addEffect(effect, char = window.player) {
-   char.effects.push({ ...effect });
+   const found = char.effects.find((e) => e.key === effect.key);
+   if (found) {
+      found.duration = found.durationOnRefresh;
+   } else {
+      char.effects.push({ ...effect });
+   }
    statusChanged();
 }
 

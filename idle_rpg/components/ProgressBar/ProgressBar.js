@@ -14,7 +14,7 @@ export class ProgressBar extends HTMLElement {
   }
 
   async connectedCallback() {
-    const res = await fetch("components/ProgressBar/ProgressBar.html");
+    const res = await fetch("./components/ProgressBar/ProgressBar.html");
     const textTemplate = await res.text();
     const HTMLTemplate = new DOMParser().parseFromString(textTemplate, "text/html").querySelector("template");
     const shadowRoot = this.attachShadow({ mode: "open" });
@@ -27,9 +27,10 @@ export class ProgressBar extends HTMLElement {
 
   initialRender = () => {
     const progress = this.shadowRoot.getElementById("progress");
-
+    const progressBar = this.shadowRoot.getElementById('progress-bar')
     for (var x in this.customStyle) {
       progress.style[x] = this.customStyle[x];
+      progressBar.style[x] = this.customStyle[x];
     }
 
     progress.style.backgroundColor = this.color;
@@ -40,6 +41,11 @@ export class ProgressBar extends HTMLElement {
 
     this.render();
   };
+
+  changeGetter = (getter) => {
+    this.getter = getter;
+    this.render();
+  }
 
   getDuration = () => {
     let duration = 0.09;
