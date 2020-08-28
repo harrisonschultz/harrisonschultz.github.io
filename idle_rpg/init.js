@@ -30,19 +30,7 @@ export function initialize() {
          adventures: [],
          completedAdventures: [],
          effects: [],
-         skills: [{
-            type: "onKill",
-            label: "Apex Predator",
-            key: "apexPredator",
-            levelNeeded: 10,
-            func: () => {
-               const apexPredator = { ...effects.apexPredator };
-               addEffect(apexPredator);
-            },
-            flavor: "placeholder",
-            description:
-               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
-         },],
+         skills: [],
          skillsUnlocked: [],
 
          stats: {

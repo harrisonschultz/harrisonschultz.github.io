@@ -347,11 +347,11 @@ export function rollForOnHits(damage, attackBonuses, attack, attacker, defender)
 
    // Check for dodge
    if (isDodged) {
-      useSkills("onDodge", { damage, attacker, defender });
+      useSkills("onDodge", { finalDmg, attacker, defender });
       finalDmg = 0;
    }
 
-   const damageBonus = useSkills('onAttack', { damage, attack, attacker, defender } )
+   const damageBonus = useSkills('onAttack', { finalDmg, attack, attacker, defender } )
 
    if (damageBonus.damage) {
       finalDmg = damageBonus.damage

@@ -22,8 +22,10 @@ export class JobsDetails extends HTMLElement {
       this.options = options;
 
       document.addEventListener("job-changed", this.render);
-      document.addEventListener("job-level", this.render);
-      document.addEventListener("job-level", this.renderSkills);
+      document.addEventListener("job-level", () => {
+         this.renderSkills();
+         this.render();
+      });
       document.addEventListener("skill-unlocked", this.renderSkills);
       document.addEventListener("skill-equipped", this.renderSkills);
       document.addEventListener("attr-level", this.render);
@@ -112,6 +114,7 @@ export class JobsDetails extends HTMLElement {
             skillDescription.innerHTML = skill.description;
 
             skillCost.className = "skill-cost";
+            skillCost.id = "skill-cost"
             const skillLockIcon = document.createElement("span");
             const skillLockText = document.createElement("span");
             if (!isSkillUnlocked(skill, this.job)) {
@@ -217,6 +220,13 @@ export class JobsDetails extends HTMLElement {
          for (const skill of this.job.skills) {
             const skillDiv = this.shadowRoot.getElementById(`skills-${skill.key}`);
 
+            if (isSkillUnlocked(skill, this.job)) {
+               const skillsCostDiv = this.shadowRoot.getElementById(`skills-cost`);
+               if (skillsCostDiv) {
+                  skillsCostDiv.remove()
+               }
+            }
+
             skillDiv.className = "skill-container";
             if (isSkillEquipped(skill)) {
                skillDiv.className += "skill-equipped";
@@ -235,14 +245,22 @@ export class JobsDetails extends HTMLElement {
                const skillAction = this.shadowRoot.getElementById(`skill-action-${skill.key}`);
                if (skillAction.title !== "Equip") {
                   skillAction.title = "Equip";
-                  skillAction.removeChild(skillAction.firstChild);
-                  console.log(skill.key, "adding equip");
+                  if (skillAction.firstChild) {
+                     skillAction.removeChild(skillAction.firstChild);
+                  }
                   // Add equip option
                   const button = new Button(skill, "skills", (skl) => equipSkill(skl), "Equip");
                   skillAction.appendChild(button);
                }
             }
          }
+      }
+   };
+
+   renderRequirements = () => {
+      if (this.shadowRoot && checkRequirements(this.job)) {
+         const reqContainer = this.shadowRoot.getElementById("job-skill-points");
+         reqContainer.remove();
       }
    };
 

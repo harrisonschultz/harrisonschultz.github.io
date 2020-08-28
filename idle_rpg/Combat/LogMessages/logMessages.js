@@ -101,7 +101,7 @@ export function messageBasic(message) {
    const { msgDiv, sourceSpan, valueSpan, effectSpan, destSpan } = initializeMessageComponents(message);
 
    if (isPlayer(message.source)) {
-      msgDiv.appendChild(sourceSpan);
+      msgDiv.appendChild(destSpan);
       effectSpan.className += " bad";
    } else {
       msgDiv.appendChild(destSpan);

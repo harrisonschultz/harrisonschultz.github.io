@@ -16,7 +16,7 @@ export const effects = {
       type: "overTime",
       func: ({ char }) => {
          const stat = getStat("health", char);
-         stat.current = stat.current - stat.max * 0.001 * getAnyJob("student").level.level;
+         stat.current = stat.current - stat.max * 0.005 * getAnyJob("student").level.level;
          setStat("health", stat, char);
       },
       duration: 80,

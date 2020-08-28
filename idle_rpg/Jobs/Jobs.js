@@ -247,7 +247,7 @@ export const jobs = {
             },
             flavor: "Strikes in an instance, but the scars never fade.",
             description:
-               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
+               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff that deals (class level / 2)% damage per second",
          },
       ],
       tier: 2,
@@ -299,8 +299,7 @@ export const jobs = {
                addEffect(apexPredator);
             },
             flavor: "placeholder",
-            description:
-               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff",
+            description: "Increases critical damage multiplier by 100% + (4x class level) on kill",
          },
       ],
       tier: 3,

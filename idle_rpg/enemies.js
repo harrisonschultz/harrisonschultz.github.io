@@ -24,11 +24,11 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 22, max: 22 },
+         health: { current: 16, max: 16 },
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.15 },
+      reward: { exp: 0.22 },
    },
 
    toxicGamer: {
@@ -64,7 +64,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.12 },
+      reward: { exp: 0.22 },
    },
 
    afkGamer: {
@@ -97,7 +97,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.09 },
+      reward: { exp: 0.19 },
    },
 
    smurf: {
@@ -133,7 +133,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.25 },
+      reward: { exp: 0.35 },
    },
 
    curatedArt: {
