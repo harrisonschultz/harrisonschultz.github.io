@@ -20,7 +20,7 @@ export const adventures = {
       label: "Hayden's Museum",
       progress: { current: 0, max: 10 },
       enemies: ["curatedArt", "displayCase", "interactiveExhibit"],
-      boss: ["nakedManStatue"],
+      boss: ["chunks"],
    },
 
    nicksAnthill: {

@@ -15,7 +15,7 @@ export const enemies = {
       jobs: {
          feeder: {
             attack: {
-               speed: 10, // Speed in game ticks to attack again.
+               speed: 20, // Speed in game ticks to attack again.
                criticalDamage: 1.5,
                dmgModifiers: [{ name: "int", modifier: 0.6 }],
                variance: 0.1, // gives attacks a range of damage by 10% either up or down.
@@ -24,7 +24,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 16, max: 16 },
+         health: { current: 8, max: 8 },
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
@@ -48,7 +48,7 @@ export const enemies = {
       jobs: {
          toxicGamer: {
             attack: {
-               speed: 16, // Speed in game ticks to attack again.
+               speed: 22, // Speed in game ticks to attack again.
                criticalDamage: 2.0,
                dmgModifiers: [
                   { name: "int", modifier: 0.5 },
@@ -60,7 +60,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 18, max: 18 },
+         health: { current: 11, max: 11 },
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
@@ -93,7 +93,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 32, max: 32 },
+         health: { current: 20, max: 20 },
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
@@ -107,9 +107,9 @@ export const enemies = {
       effects: [],
       attrs: {
          agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 3, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 8, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 2, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 5, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
       },
 
@@ -120,8 +120,8 @@ export const enemies = {
                speed: 29, // Speed in game ticks to attack again.
                criticalDamage: 2.5,
                dmgModifiers: [
-                  { name: "int", modifier: 2 },
-                  { name: "per", modifier: 1 },
+                  { name: "int", modifier: 0.4 },
+                  { name: "per", modifier: 0.3 },
                ],
                variance: 0.15, // gives attacks a range of damage by 10% either up or down.
             },
@@ -129,7 +129,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 64, max: 64 },
+         health: { current: 30, max: 30 },
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
@@ -143,9 +143,9 @@ export const enemies = {
       effects: [],
       attrs: {
          agi: { label: "Agility", level: 1, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 15, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 8, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 30, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 13, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
       },
 
@@ -156,8 +156,8 @@ export const enemies = {
                speed: 20, // Speed in game ticks to attack again.
                criticalDamage: 1.8,
                dmgModifiers: [
-                  { name: "int", modifier: 0.24 },
-                  { name: "per", modifier: 0.5 },
+                  { name: "int", modifier: 0.25 },
+                  { name: "per", modifier: 0.45 },
                ],
                variance: 0.15, // gives attacks a range of damage by 10% either up or down.
             },
@@ -165,7 +165,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 72, max: 72 },
+         health: { current: 38, max: 38 },
          stamina: { current: 1, max: 1 },
          mana: { current: 10, max: 10 },
       },
@@ -182,7 +182,7 @@ export const enemies = {
          int: { label: "Intelligence", level: 15, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
          per: { label: "Perception", level: 5, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 55, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 18, exp: 0, expNeeded: 0 },
       },
 
       job: "displayCase",
@@ -198,7 +198,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 100, max: 100 },
+         health: { current: 40, max: 40 },
          stamina: { current: 10, max: 10 },
          mana: { current: 1, max: 1 },
       },
@@ -211,10 +211,10 @@ export const enemies = {
       description: "History with all the stimuli",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 20, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 25, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 10, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 10, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 30, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 10, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 1, exp: 0, expNeeded: 0 },
       },
 
@@ -227,7 +227,7 @@ export const enemies = {
                dmgModifiers: [
                   { name: "agi", modifier: 0.33 },
                   { name: "int", modifier: 0.3 },
-                  { name: "per", modifier: 0.4 },
+                  { name: "per", modifier: 0.33 },
                ],
                variance: 0.15, // gives attacks a range of damage by 10% either up or down.
             },
@@ -235,29 +235,29 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 110, max: 110 },
+         health: { current: 34, max: 34 },
          stamina: { current: 10, max: 10 },
          mana: { current: 10, max: 10 },
       },
       reward: { exp: 0.35 },
    },
 
-   nakedStatueMan: {
-      prop: "nakedStatueMan",
-      label: "Naked Statue Man",
-      description: "Ripped, Chiseled, and Nude. He has it all.",
+   chunks: {
+      prop: "chunks",
+      label: "Chunks",
+      description: "The master curator's cat, impregnable and steadfast",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 30, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 20, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 20, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 10, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 20, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 40, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 10, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 18, exp: 0, expNeeded: 0 },
       },
 
-      job: "nakedStatueMan",
+      job: "chunks",
       jobs: {
-         nakedStatueMan: {
+         chunks: {
             attack: {
                speed: 25, // Speed in game ticks to attack again.
                criticalDamage: 2.1,
@@ -273,7 +273,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 250, max: 250 },
+         health: { current: 75, max: 75 },
          stamina: { current: 22, max: 22 },
          mana: { current: 8, max: 8 },
       },
@@ -286,11 +286,11 @@ export const enemies = {
       description: "The lowest of the communist community",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 50, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 40, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 1, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
          per: { label: "Perception", level: 1, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 80, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 40, exp: 0, expNeeded: 0 },
       },
 
       job: "workerAnt",
@@ -309,7 +309,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 300, max: 300 },
+         health: { current: 100, max: 100 },
          stamina: { current: 22, max: 22 },
          mana: { current: 1, max: 1 },
       },
@@ -322,13 +322,12 @@ export const enemies = {
       description: "Keeps everyone's ass in line, and yours is no exception.",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 80, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 50, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 20, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 1, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 80, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 15, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 50, exp: 0, expNeeded: 0 },
       },
-
       job: "soldierAnt",
       jobs: {
          soldierAnt: {
@@ -346,7 +345,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 400, max: 400 },
+         health: { current: 120, max: 120 },
          stamina: { current: 22, max: 22 },
          mana: { current: 1, max: 1 },
       },
@@ -359,10 +358,10 @@ export const enemies = {
       description: "The Xi Jinping of ants",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 40, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 30, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 100, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 120, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 100, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 30, exp: 0, expNeeded: 0 },
       },
 
@@ -382,48 +381,13 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 800, max: 800 },
+         health: { current: 240, max: 240 },
          stamina: { current: 12, max: 12 },
          mana: { current: 32, max: 32 },
       },
       reward: { exp: 1.6 },
    },
 
-   queenAnt: {
-      prop: "queenAnt",
-      label: "Queen Ant",
-      description: "The Xi Jinping of ants",
-      effects: [],
-      attrs: {
-         agi: { label: "Agility", level: 40, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 100, exp: 0, expNeeded: 0 },
-         lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 120, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 30, exp: 0, expNeeded: 0 },
-      },
-
-      job: "queenAnt",
-      jobs: {
-         queenAnt: {
-            attack: {
-               speed: 28, // Speed in game ticks to attack again.
-               criticalDamage: 2.2,
-               dmgModifiers: [
-                  { name: "per", modifier: 0.4 },
-                  { name: "int", modifier: 0.4 },
-               ],
-               variance: 0.08, // gives attacks a range of damage by 10% either up or down.
-            },
-         },
-      },
-
-      stats: {
-         health: { current: 800, max: 800 },
-         stamina: { current: 12, max: 12 },
-         mana: { current: 32, max: 32 },
-      },
-      reward: { exp: 1.6 },
-   },
 
    hayden: {
       prop: "hayden",
@@ -432,9 +396,9 @@ export const enemies = {
       effects: [],
       attrs: {
          agi: { label: "Agility", level: 40, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 170, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 200, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 130, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 150, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 30, exp: 0, expNeeded: 0 },
       },
 
@@ -454,7 +418,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1200, max: 1200 },
+         health: { current: 300, max: 300 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -464,14 +428,14 @@ export const enemies = {
    jake: {
       prop: "jake",
       label: "Jake The Muscle",
-      description: "Completely Jacked.",
+      description: "Invincible, Vigourous, Hardened",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 130, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 200, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 30, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
          per: { label: "Perception", level: 80, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 170, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 220, exp: 0, expNeeded: 0 },
       },
 
       job: "jake",
@@ -490,9 +454,9 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1600, max: 1600 },
-         stamina: { current: 12, max: 12 },
-         mana: { current: 52, max: 52 },
+         health: { current: 380, max: 380 },
+         stamina: { current: 42, max: 42 },
+         mana: { current: 20, max: 20 },
       },
       reward: { exp: 1.6 },
    },
@@ -514,7 +478,7 @@ export const enemies = {
       jobs: {
          zach: {
             attack: {
-               speed: 28, // Speed in game ticks to attack again.
+               speed: 22, // Speed in game ticks to attack again.
                criticalDamage: 2.2,
                dmgModifiers: [
                   { name: "per", modifier: 0.4 },
@@ -526,7 +490,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1350, max: 1350 },
+         health: { current: 320, max: 320 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -539,7 +503,7 @@ export const enemies = {
       description: "Strong, Blunt, In your face.",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 130, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 170, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 30, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
          per: { label: "Perception", level: 80, exp: 0, expNeeded: 0 },
@@ -550,7 +514,7 @@ export const enemies = {
       jobs: {
          joe: {
             attack: {
-               speed: 32, // Speed in game ticks to attack again.
+               speed: 25, // Speed in game ticks to attack again.
                criticalDamage: 2.4,
                dmgModifiers: [
                   { name: "agi", modifier: 0.4 },
@@ -562,7 +526,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1500, max: 1500 },
+         health: { current: 340, max: 340 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -576,10 +540,10 @@ export const enemies = {
       effects: [],
       attrs: {
          agi: { label: "Agility", level: 70, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 100, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 200, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
          per: { label: "Perception", level: 60, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 130, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 270, exp: 0, expNeeded: 0 },
       },
 
       job: "daniel",
@@ -589,7 +553,6 @@ export const enemies = {
                speed: 35, // Speed in game ticks to attack again.
                criticalDamage: 2.5,
                dmgModifiers: [
-                  { name: "agi", modifier: 0.4 },
                   { name: "int", modifier: 0.4 },
                   { name: "str", modifier: 0.4 },
                ],
@@ -599,7 +562,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1700, max: 1700 },
+         health: { current: 410, max: 410 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -612,11 +575,11 @@ export const enemies = {
       description: "Efficient, Quick, Clean",
       effects: [],
       attrs: {
-         agi: { label: "Agility", level: 120, exp: 0, expNeeded: 0 },
+         agi: { label: "Agility", level: 60, exp: 0, expNeeded: 0 },
          int: { label: "Intelligence", level: 80, exp: 0, expNeeded: 0 },
-         lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 130, exp: 0, expNeeded: 0 },
-         str: { label: "Strength", level: 130, exp: 0, expNeeded: 0 },
+         lck: { label: "Luck", level: 10, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 100, exp: 0, expNeeded: 0 },
+         str: { label: "Strength", level: 100, exp: 0, expNeeded: 0 },
       },
 
       job: "mike",
@@ -628,7 +591,9 @@ export const enemies = {
                dmgModifiers: [
                   { name: "per", modifier: 0.4 },
                   { name: "agi", modifier: 0.4 },
+                  { name: "lck", modifier: 0.6 },
                   { name: "str", modifier: 0.4 },
+                  { name: "int", modifier: 0.4 },
                ],
                variance: 0.08, // gives attacks a range of damage by 10% either up or down.
             },
@@ -636,7 +601,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1400, max: 1400 },
+         health: { current: 330, max: 330 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -672,7 +637,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1200, max: 1200 },
+         health: { current: 310, max: 310 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -709,7 +674,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1200, max: 1200 },
+         health: { current: 320, max: 320 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -746,7 +711,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1400, max: 1400 },
+         health: { current: 300, max: 300 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -783,7 +748,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 1400, max: 1400 },
+         health: { current: 350, max: 350 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -797,9 +762,9 @@ export const enemies = {
       effects: [],
       attrs: {
          agi: { label: "Agility", level: 60, exp: 0, expNeeded: 0 },
-         int: { label: "Intelligence", level: 240, exp: 0, expNeeded: 0 },
+         int: { label: "Intelligence", level: 350, exp: 0, expNeeded: 0 },
          lck: { label: "Luck", level: 1, exp: 0, expNeeded: 0 },
-         per: { label: "Perception", level: 230, exp: 0, expNeeded: 0 },
+         per: { label: "Perception", level: 350, exp: 0, expNeeded: 0 },
          str: { label: "Strength", level: 60, exp: 0, expNeeded: 0 },
       },
 
@@ -819,7 +784,7 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 3000, max: 3000 },
+         health: { current: 700, max: 700 },
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
@@ -857,12 +822,10 @@ export const enemies = {
       },
 
       stats: {
-         health: { current: 15000, max: 15000 },
+         health: { current: 10000, max: 10000 },
          stamina: { current: 200, max: 200 },
          mana: { current: 200, max: 200 },
       },
       reward: { exp: 3.0 },
    },
 };
-// ["curatedArt", "displayCase", "interactiveExhibit"],
-// ["workerAnt", "soldierAnt"],
