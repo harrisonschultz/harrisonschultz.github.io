@@ -88,12 +88,12 @@ export const jobs = {
             type: "onRest",
             label: "Pliable",
             key: "pliable",
-            levelNeeded: 5,
+            levelNeeded: 2,
             func: () => {
-               addJobExp(getJob().level.expNeeded * (0.0001 * getAnyJob("child").level.level) + 0.003);
+               addJobExp(0.001 * getAnyJob("child").level.level);
             },
             flavor: "A child's experience takes hold after rest",
-            description: "Gain 0.1% of your exp to level per rest tick.",
+            description: "Gain 0.001 exp per child level per rest tick.",
          },
          {
             type: "whenHit",
@@ -117,7 +117,8 @@ export const jobs = {
                variance: 0.1, // gives attacks a range of damage by 10% either up or down.
             },
             flavor: "Learning from the experience gives new insights",
-            description: "Gain experience when striking an enemy based on their attack stats.",
+            description:
+               "Gain experience when hit by an enemy based on their attack stats (enemy attack attribute * 1/10 of your child level).",
          },
       ],
       attack: {
@@ -155,7 +156,7 @@ export const jobs = {
                addEffect(oppurtunistic);
             },
             flavor: "An opponent is never more vulnerable than when he puts himself off balance.",
-            description: "After a successful dodge, 100% critical chance for the next 2.5s",
+            description: "After a successful dodge, 100% critical chance for the next 2.5s + (0.1s per urchin level)",
          },
          {
             type: "attack",
@@ -163,7 +164,7 @@ export const jobs = {
             key: "swiftSlash",
             levelNeeded: 3,
             cost: [{ type: "stat", name: "stamina", value: -4 }],
-            cooldown: 10,
+            cooldown: 100,
             func: ({ damage, attack, attacker, defender }) => {
                return {
                   secondaryAttributes: [
@@ -183,7 +184,8 @@ export const jobs = {
                variance: 0.1, // gives attacks a range of damage by 10% either up or down.
             },
             flavor: "A swift blade can inflict greater wounds than the mightiest hammer.",
-            description: "An attack with bonus 30% critical chance, and a 220% critical damage multiplier",
+            description:
+               "An attack with bonus 30% + (1% per urchin level) critical chance, and a 220% critical damage multiplier",
          },
       ],
       tier: 2,
@@ -216,18 +218,14 @@ export const jobs = {
             levelNeeded: 4,
             unlocked: true,
             func: (enemy) => {
-               // Base exp bonus, and a percentage
-               const baseExpBonus = 0.1;
-               const percentageExpBonus = (getAttr("int").level / (2 - 0.05 * getAnyJob("urchin").level.level)) * 0.01; // boost exp by 1/2 of your intellegence
-               const base = enemy.reward.exp * baseExpBonus;
+               const percentageExpBonus = (getAttr("int").level / 1 / getAnyJob("student").level.level) * 0.5;
                const percent = enemy.reward.exp * percentageExpBonus;
 
-               console.log(`Gained ${enemy.reward.exp} + ${base + percent}`);
-
-               addJobExp(base + percent);
+               addJobExp(percent);
             },
             flavor: "A blow to the body, is a trove to the mind.",
-            description: "Gain 1/2 of your intelligence as a percentage class exp bonus on kill.",
+            description:
+               "Gain percentage bonus class exp on kill. Enemy Exp + (Enemy Exp * intelligence / 1 / student level * 0.5)",
          },
          {
             type: "attack",
@@ -235,7 +233,7 @@ export const jobs = {
             key: "flameLash",
             levelNeeded: 6,
             cost: [{ type: "stat", name: "mana", value: -4 }],
-            cooldown: 10,
+            cooldown: 100,
             unlocked: true,
             func: ({ damage, attack, attacker, defender }) => {
                addEffect(effects.flameLash, defender);
@@ -247,7 +245,7 @@ export const jobs = {
             },
             flavor: "Strikes in an instance, but the scars never fade.",
             description:
-               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff that deals (class level / 2)% damage per second",
+               "A whip of searing heat strikes your foe dealing 1.5x of your intelligence and applying a burning debuff that deals (student level / 2)% damage per second",
          },
       ],
       tier: 2,

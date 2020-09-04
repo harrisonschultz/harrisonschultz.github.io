@@ -221,7 +221,7 @@ export class JobsDetails extends HTMLElement {
             const skillDiv = this.shadowRoot.getElementById(`skills-${skill.key}`);
 
             if (isSkillUnlocked(skill, this.job)) {
-               const skillsCostDiv = this.shadowRoot.getElementById(`skills-cost`);
+               const skillsCostDiv = this.shadowRoot.getElementById(`skill-cost`);
                if (skillsCostDiv) {
                   skillsCostDiv.remove()
                }

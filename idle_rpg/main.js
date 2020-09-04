@@ -1,16 +1,17 @@
 import { initialize } from "./init.js";
 import { actions, Actions } from "./Actions/Actions.js";
 import { Combat, fight } from "./Combat/Combat.js";
-import { addAttrExp, modifyStat, rest, elapseTime } from "./Character/Character.js";
+import { addAttrExp, modifyStat, rest, elapseTime, regenerateStats } from "./Character/Character.js";
 import { TabMenu } from "./components/TabMenu/TabMenu.js";
 import { Adventure } from "./Adventure/Adventure.js";
 import { JobsList } from "./Jobs/Jobs.js";
 import { save } from './core.js'
 
+export const TICK_RATE = 100
+
 // Main loop
 async function main() {
   let tick = 0;
-  let tickRate = 100; // milliseconds per tick (default is 100 or 1/10 a second)
 
   initialize();
   initialRender();
@@ -19,12 +20,13 @@ async function main() {
     tick++;
 
     // Tick buffs
+    // Regen stats
     elapseTime()
 
     // perform selected action
     performAction(tick);
 
-    await regulateTickRate(tickRate);
+    await regulateTickRate(TICK_RATE);
 
     // Save
     if (tick % 100 === 0) {

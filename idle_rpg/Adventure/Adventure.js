@@ -28,7 +28,7 @@ export class Adventure extends HTMLElement {
       const instance = HTMLTemplate.content.cloneNode(true);
       shadowRoot.appendChild(instance);
 
-      document.addEventListener("attr-level", this.renderActions);
+      document.addEventListener("adventure-changed", this.renderActions);
       document.addEventListener("adventure-changed", this.renderAdventureProgressBar);
       this.initialRender();
    }

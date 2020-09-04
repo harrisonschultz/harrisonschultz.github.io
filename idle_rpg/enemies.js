@@ -28,7 +28,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.22 },
+      reward: { exp: 0.11 },
    },
 
    toxicGamer: {
@@ -64,7 +64,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.22 },
+      reward: { exp: 0.11 },
    },
 
    afkGamer: {
@@ -97,7 +97,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.19 },
+      reward: { exp: 0.09 },
    },
 
    smurf: {
@@ -133,7 +133,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.35 },
+      reward: { exp: 0.2 },
    },
 
    curatedArt: {
@@ -169,7 +169,7 @@ export const enemies = {
          stamina: { current: 1, max: 1 },
          mana: { current: 10, max: 10 },
       },
-      reward: { exp: 0.3 },
+      reward: { exp: 0.15 },
    },
 
    displayCase: {
@@ -202,7 +202,7 @@ export const enemies = {
          stamina: { current: 10, max: 10 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.32 },
+      reward: { exp: 0.16 },
    },
 
    interactiveExhibit: {
@@ -239,7 +239,7 @@ export const enemies = {
          stamina: { current: 10, max: 10 },
          mana: { current: 10, max: 10 },
       },
-      reward: { exp: 0.35 },
+      reward: { exp: 0.18 },
    },
 
    chunks: {
@@ -277,7 +277,7 @@ export const enemies = {
          stamina: { current: 22, max: 22 },
          mana: { current: 8, max: 8 },
       },
-      reward: { exp: 0.8 },
+      reward: { exp: 0.4 },
    },
 
    workerAnt: {
@@ -313,7 +313,7 @@ export const enemies = {
          stamina: { current: 22, max: 22 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.8 },
+      reward: { exp: 0.4 },
    },
 
    soldierAnt: {
@@ -349,7 +349,7 @@ export const enemies = {
          stamina: { current: 22, max: 22 },
          mana: { current: 1, max: 1 },
       },
-      reward: { exp: 0.8 },
+      reward: { exp: 0.4 },
    },
 
    queenAnt: {
@@ -385,7 +385,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 32, max: 32 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
 
@@ -422,7 +422,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    jake: {
@@ -458,7 +458,7 @@ export const enemies = {
          stamina: { current: 42, max: 42 },
          mana: { current: 20, max: 20 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    zach: {
@@ -494,7 +494,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    Joe: {
@@ -530,7 +530,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    daniel: {
@@ -566,7 +566,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    mike: {
@@ -605,7 +605,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    brandon: {
@@ -641,7 +641,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    tony: {
@@ -678,7 +678,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    nick: {
@@ -715,7 +715,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    otherZach: {
@@ -752,7 +752,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    kenny: {
@@ -788,7 +788,7 @@ export const enemies = {
          stamina: { current: 12, max: 12 },
          mana: { current: 52, max: 52 },
       },
-      reward: { exp: 1.6 },
+      reward: { exp: 0.8 },
    },
 
    spirg: {

@@ -31,6 +31,7 @@ const SKILL_LIMIT = 5;
          document.addEventListener("attr-level", this.render);
          document.addEventListener("status-changed", this.renderBuffs);
          document.addEventListener("time-elapsed", this.renderBuffs);
+         document.addEventListener("gold-changed", this.renderGold);
       }
 
       connectedCallback() {
@@ -51,6 +52,20 @@ const SKILL_LIMIT = 5;
          // Job details
          const jobDetails = new JobsDetails(undefined, { self: true });
          this.shadowRoot.getElementById("character-jobs-details").appendChild(jobDetails);
+
+         const goldContainer = this.shadowRoot.getElementById("gold-container");
+         const goldLabel = document.createElement("div");
+         const goldValue = document.createElement("div");
+         goldContainer.appendChild(goldLabel);
+         goldContainer.appendChild(goldValue);
+
+         goldContainer.className = "gold-container container";
+         goldLabel.className = "attribute-label";
+         goldValue.className = "attribute-value";
+
+         goldLabel.innerHTML = "Gold";
+         goldValue.id = "gold-value";
+         goldValue.innerHTML = getGold();
 
          // Attribute bars
          const attrContainer = this.shadowRoot.getElementById("attributes-container");
@@ -120,6 +135,11 @@ const SKILL_LIMIT = 5;
          }
       }
 
+      renderGold = () => {
+         const goldValue = this.shadowRoot.getElementById("gold-value");
+         goldValue.innerHTML = getGold();
+      };
+
       render = () => {
          if (this.shadowRoot) {
             for (var key in player.attrs) {
@@ -152,11 +172,27 @@ export function setStat(stat, statData, char = window.player) {
    statChange();
 }
 
-export function completeAdventure() {
-   window.player.completedAdventures.push(getAdventure().prop)
+export function completeAdventure(char = window.player) {
+   char.completedAdventures.push(getAdventure().prop);
+   addGold(getAdventure().goldAward, char);
    resetAdventure();
    adventureChanged();
    setAction("rest");
+}
+
+export function addGold(value, char = window.player) {
+   char.gold += value;
+   goldChange();
+}
+
+export function payGold(value, char = window.player) {
+   const newValue = char.gold - value;
+   if (newValue >= 0) {
+      char.gold = newValue;
+      goldChange();
+      return true;
+   }
+   return false;
 }
 
 export function setCurrentEnemy(enemy) {
@@ -216,6 +252,10 @@ export function applyOverTimeEffects(char) {
    statChange();
 }
 
+export function getGold(char = window.player) {
+   return char.gold;
+}
+
 export function getAttr(attr, char = window.player) {
    return char.attrs[attr];
 }
@@ -234,6 +274,12 @@ export function getAnyJob(jobName, char = window.player) {
 
 export function getStats(char = window.player) {
    return char.stats;
+}
+
+export function regenerateStats(char = window.player) {
+   addStatCurrent("mana", 0.2, char);
+   addStatCurrent("stamina", 0.2, char);
+   statChange();
 }
 
 export function getJob(char = window.player) {
@@ -406,7 +452,7 @@ export function applyEffects(type, data, char = window.player) {
 export function getSecondaryAttributeValue(secondaryAttr, char = window.player) {
    let value = 0;
    for (const a of secondaryAttr.attributes) {
-      value += 1 * Math.pow(1.09, getAttr(a.name, char).level * a.modifier * 0.5)
+      value += 1 * Math.pow(1.09, getAttr(a.name, char).level * a.modifier * 0.5);
    }
 
    const appliedValue = applyEffects(secondaryAttr.key, value, char) || value;
@@ -567,23 +613,31 @@ export function paySkill(skill) {
                break;
          }
    }
+
+   startCooldown(skill);
+}
+
+export function startCooldown(skill, char = window.player) {
+   if (skill.cooldown) {
+      char.cooldowns = char.cooldowns || {};
+      char.cooldowns[skill.key] = skill.cooldown;
+   }
 }
 
 export function isSkillReady(skill, char = window.player) {
    let ready = true;
 
+   // Check custom ready conditions
    if (skill.isReady && !skill.isReady()) {
       return false;
    }
 
-   if (skill.readyConditions) {
-      for (const condition of skill.readyConditions) {
-         if (condition.type === "stat" && getStat(condition.name, char).current >= condition.need) {
-            return false;
-         }
-      }
+   // Check cooldowns
+   if (skill.cooldown && char.cooldowns && char.cooldowns[skill.key] && char.cooldowns[skill.key] > 0) {
+      return false;
    }
 
+   // Check standard conditions
    if (skill.cost) {
       for (const cost of skill.cost) {
          switch (cost.type) {
@@ -635,6 +689,7 @@ export function elapseTime() {
    }
    for (const char of chars) {
       for (const eff of char.effects) {
+         // Buffs and debuffs
          applyOverTimeEffects(char);
          if (eff.duration <= 0) {
             removeEffect(eff, char);
@@ -642,8 +697,25 @@ export function elapseTime() {
             eff.duration--;
          }
       }
+      // Cooldowns
+      tickCooldowns(char);
+
+      // Stat Regen
+      regenerateStats(char);
    }
    timeElapsed();
+}
+
+export function tickCooldowns(char = window.player) {
+   if (char.cooldowns) {
+      for (const cd in char.cooldowns) {
+         // Subtract 1 from the cooldown
+         char.cooldowns[cd] = char.cooldowns[cd] - 1;
+         if (char.cooldowns[cd] < 1) {
+            delete char.cooldowns[cd];
+         }
+      }
+   }
 }
 
 export function removeEffect(effect, char = window.player) {
@@ -718,6 +790,11 @@ export function skillEquipped(data = {}) {
 
 export function skillUnlocked(data = {}) {
    const event = new CustomEvent("skill-unlocked", data);
+   document.dispatchEvent(event);
+}
+
+export function goldChange(data = {}) {
+   const event = new CustomEvent("gold-changed", data);
    document.dispatchEvent(event);
 }
 
