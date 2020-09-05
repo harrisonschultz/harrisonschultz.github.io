@@ -297,7 +297,7 @@ export const enemies = {
       jobs: {
          workerAnt: {
             attack: {
-               speed: 2, // Speed in game ticks to attack again.
+               speed: 20, // Speed in game ticks to attack again.
                criticalDamage: 1.5,
                dmgModifiers: [
                   { name: "agi", modifier: 0.4 },
