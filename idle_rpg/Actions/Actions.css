@@ -1,64 +1,76 @@
 #log {
-  display: flex;
-  flex-direction: column;
-  height: 250px;
-  width: 400px;
+   display: flex;
+   flex-direction: column;
+   height: 250px;
+   width: 400px;
 
-  background-color: rgba(180, 180, 180, 0.5);
+   background-color: rgba(180, 180, 180, 0.5);
 }
 
 .action-button {
-  min-width: 120px;
-  max-width: 120px;
-  width: 120px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  ;
-  font-size: 13px;
-  background-color: #f88379;
-  transition-property: background-color, box-shadow;
-  transition-duration: 0.3s;
+   min-width: 120px;
+   max-width: 120px;
+   width: 120px;
+   margin-top: 4px;
+   margin-bottom: 4px;
+   padding-top: 4px;
+   padding-bottom: 4px;
+   font-size: 13px;
+   background-color: #f88379;
+   transition-property: background-color, box-shadow;
+   transition-duration: 0.3s;
 }
 
 #current-action-container {
-  display: flex;
-  margin-bottom: 10px;
-  font-weight: 550;
+   display: flex;
+   margin-bottom: 10px;
+   font-weight: 550;
 }
 
 #action-description {
-  margin-left: 10px;
-  font-weight: 400;
+   margin-left: 10px;
+   font-weight: 400;
 }
 
 .button-seperator {
-  flex: 1 0 10px;
-  max-width: 10px;
+   flex: 1 0 10px;
+   max-width: 10px;
 }
 
 .action-button:hover {
-  background-color: #f44232
+   background-color: #f44232;
+}
+
+.actions-tier {
+   display: flex;
+   flex-direction: column;
+   margin-bottom: 24px;
+}
+
+.actions-tier-title {
+   text-align: left;
+   padding-bottom: 2px;
+   border-bottom: 1px solid rgba(240, 240, 240, 0.15);
+   margin-bottom: 6px;
 }
 
 .actions-row {
-  display: flex;
-  flex-wrap: wrap;
+   display: flex;
+   flex-wrap: wrap;
 }
 
 #actions-container {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 /* Reset */
 button {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
+   background: none;
+   color: inherit;
+   border: none;
+   padding: 0;
+   font: inherit;
+   cursor: pointer;
+   outline: inherit;
 }

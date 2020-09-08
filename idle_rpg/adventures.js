@@ -8,6 +8,7 @@ export const adventures = {
       progress: { current: 0, max: 10 },
       enemies: ["toxicGamer", "afkGamer", "feeder"],
       boss: ["smurf"],
+      goldAward: 1,
    },
 
    haydensMuseum: {
@@ -21,6 +22,7 @@ export const adventures = {
       progress: { current: 0, max: 10 },
       enemies: ["curatedArt", "displayCase", "interactiveExhibit"],
       boss: ["chunks"],
+      goldAward: 7,
    },
 
    nicksAnthill: {
@@ -33,6 +35,7 @@ export const adventures = {
       progress: { current: 0, max: 10 },
       enemies: ["workerAnt", "soldierAnt"],
       boss: ["queenAnt"],
+      goldAward: 49,
    },
 
    mumble: {
@@ -45,6 +48,7 @@ export const adventures = {
       progress: { current: 0, max: 10 },
       enemies: ["Hayden", "Nick", "Mike", "Daniel", "Jake", "Zach", "Joe", "Tony", "Other Zach", "Brandon"],
       boss: ["Kenny"],
+      goldAward: 343,
    },
 
    spirgsLair: {
@@ -57,5 +61,6 @@ export const adventures = {
       progress: { current: 0, max: 1 },
       enemies: [],
       boss: ["Spirg"],
+      goldAward: 5000,
    },
 };

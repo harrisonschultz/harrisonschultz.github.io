@@ -1,10 +1,21 @@
 <template id="action-list">
-  <link rel="stylesheet" href="./Actions/Actions.css" />
-  <div id="current-action-container">Performing: <div id="action-description"></div></div>
-  <div id="actions-container">
-    <div id="tier-1" class="actions-row"></div>
-    <div id="tier-2" class="actions-row"></div>
-    <div id="tier-3" class="actions-row"></div>
-    <div id="tier-4" class="actions-row"></div>
-  </div>
+   <link rel="stylesheet" href="./Actions/Actions.css" />
+   <div id="actions-container">
+      <div class="actions-tier">
+         <div class="actions-tier-title">Tier 1</div>
+         <div id="tier-1" class="actions-row"></div>
+      </div>
+      <div class="actions-tier">
+         <div class="actions-tier-title">Tier 2</div>
+         <div id="tier-2" class="actions-row"></div>
+      </div>
+      <div class="actions-tier">
+         <div class="actions-tier-title">Tier 3</div>
+         <div id="tier-3" class="actions-row"></div>
+      </div>
+      <div class="actions-tier">
+         <div class="actions-tier-title">Tier 4</div>
+         <div id="tier-4" class="actions-row"></div>
+      </div>
+   </div>
 </template>

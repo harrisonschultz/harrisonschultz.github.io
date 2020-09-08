@@ -1,99 +1,101 @@
 #character-sheet {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .attributes {
-  margin-top: 10px;
-  margin-bottom: 4px;
-  display: flex;
-  flex-direction: column;
+   margin-top: 6px;
+   display: flex;
+   flex-direction: column;
+}
+
+.gold-container {
+   display: flex;
+   margin-top: 6px;
 }
 
 .attribute {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 2px;
+   display: flex;
+   flex-direction: column;
+   margin-bottom: 2px;
 }
 
 .container {
-  padding: 6px;
-  ;
-  background-color: rgba(240,240,240, 0.15);
+   padding: 6px;
+   background-color: rgba(240, 240, 240, 0.15);
 }
 
 .top {
-  margin-top: 0px;
+   margin-top: 0px;
 }
 
 .character-status {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .character-effect-row {
-  display: flex;
-  padding: 3px 0px;
-  width: 100%;
+   display: flex;
+   padding: 3px 0px;
+   width: 100%;
 }
 
 #buffs-container {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .character-effect-duration {
-  margin-left: auto;
+   margin-left: auto;
 }
 
 .title {
-  color: #78DCE8;
-  font-size: 12px;
-  padding-bottom: 6px;
+   color: #78dce8;
+   font-size: 12px;
+   padding-bottom: 6px;
 }
 
 #attributes-container {
-  margin-bottom: 6px;
+   margin-bottom: 6px;
 }
 
 .secondary-attributes {
-  margin-top: 4px;
+   margin-top: 4px;
 }
 
 .attribute-details {
-  display: flex;
+   display: flex;
 }
 
 #face {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  ;
-  background-color: rgba(240,240,240, 0.85);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 10px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+   background-color: rgba(240, 240, 240, 0.85);
 }
 
 .bar {
-  flex: 1;
-  display: flex;
-  padding: 3px 0px;
+   flex: 1;
+   display: flex;
+   padding: 3px 0px;
 }
 
 .max-value {
-  width: 80px;
-  text-align: end;
-  margin-left: auto;
+   width: 80px;
+   text-align: end;
+   margin-left: auto;
 }
 
 .attribute-label {
-  width: 140px;
+   width: 140px;
 }
 
 .attribute-value {
-  width: 80px;
-  text-align: end;
-  margin-left: auto;
+   width: 80px;
+   text-align: end;
+   margin-left: auto;
 }

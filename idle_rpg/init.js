@@ -32,6 +32,9 @@ export function initialize() {
          effects: [],
          skills: [],
          skillsUnlocked: [],
+         cooldowns: {},
+         actionsUnlocked: [],
+         gold: 0,
 
          stats: {
             health: { current: 1, max: 1 },
