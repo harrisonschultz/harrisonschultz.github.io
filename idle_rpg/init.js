@@ -15,11 +15,11 @@ export function initialize() {
          tab: "Train",
 
          attrs: {
-            agi: { label: "Agility", level: 20, exp: 0, expNeeded: 1.1 },
-            int: { label: "Intelligence", level: 20, exp: 0, expNeeded: 1.1 },
+            agi: { label: "Agility", level: 1, exp: 0, expNeeded: 1.1 },
+            int: { label: "Intelligence", level: 1, exp: 0, expNeeded: 1.1 },
             lck: { label: "Luck", level: 1, exp: 0, expNeeded: 1.1 },
-            per: { label: "Perception", level: 20, exp: 0, expNeeded: 1.1 },
-            str: { label: "Strength", level: 20, exp: 0, expNeeded: 1.1 },
+            per: { label: "Perception", level: 1, exp: 0, expNeeded: 1.1 },
+            str: { label: "Strength", level: 1, exp: 0, expNeeded: 1.1 },
          },
 
          job: "child",
